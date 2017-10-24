@@ -8,6 +8,7 @@
   }
   p {
     padding: 10px 20px;
+    line-height: 1.6;
   }
   @keyframes fadeIn {
     from {
@@ -23,7 +24,7 @@
   About us
 </h1>
 <p>
-  This demo create by {{ author }}.
+  This demo created by {{ author }}.
   <br>
   params: {{ params }}
   <br>
