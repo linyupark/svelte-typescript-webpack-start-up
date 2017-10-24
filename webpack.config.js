@@ -31,20 +31,22 @@ let config = {
     rules: [
       {
         test: /\.(js|ts)$/,
-        exclude: /node_modules/,
+        include: path.resolve('src'),
         use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }]
       },
       {
         test: /\.sve$/,
-        exclude: /node_modules/,
+        include: path.resolve('src'),
         use: [{ loader: 'babel-loader' }, { loader: 'svelte-loader' }]
       },
       {
         test: /\.(png|jpg)$/,
+        include: path.resolve('src'),
         use: ['url-loader?limit=8192&name=img/[hash:8].[name].[ext]']
       },
       {
         test: /\.(less|css)$/,
+        include: path.resolve('src'),
         use:
           ['test', 'production'].indexOf(process.env.ENV) >= 0
             ? ExtractTextPlugin.extract({

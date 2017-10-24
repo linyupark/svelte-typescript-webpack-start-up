@@ -23,14 +23,21 @@
   About us
 </h1>
 <p>
-  This demo create by {{ author }}
+  This demo create by {{ author }}.
+  <br>
+  params: {{ params }}
+  <br>
+  search: {{ search }}
 </p>
 
 <script>
+  import { Route } from  '../'
   export default {
     data() {
       return {
-        author: 'linyupark@gmail.com'
+        author: 'linyupark@gmail.com',
+        params: Route.params.join(' '),
+        search: Route.search
       }
     },
     oncreate() {

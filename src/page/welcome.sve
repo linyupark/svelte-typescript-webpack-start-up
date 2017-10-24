@@ -13,7 +13,7 @@
 </h1>
 <p>
   Welcome, {{ username }}, path: {{ path }}
-  <a href="javascript:;" on:click="goto('/about')">About us</a>
+  <a href="javascript:;" on:click="goto('/about/2017?page=2')">About us</a>
 </p>
 
 <script>

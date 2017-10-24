@@ -11,8 +11,10 @@ You can use ES6 in the svelte file, babel-loader will take care of the code comp
 ```
   # install
   > npm i 
+
   # start develope
   > npm run dev
+  
   # start develope for windows
   > npm run dev:win
 ```

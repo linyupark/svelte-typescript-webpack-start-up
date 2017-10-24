@@ -38,7 +38,7 @@ class Router {
       const matched = pathname.match(page.rule);
       if (matched) {
         this.pageParams = matched.splice(1);
-        page.component
+        import(`../page/${page.component}`)
           .then(Page => {
             if (this.currentPage) this.currentPage.destroy();
             this.currentPage = new Page.default({
@@ -72,11 +72,11 @@ class Router {
   // 移动到某地址
   goto = (path: string) => {
     this.history.push(path);
-  }
+  };
 
   replace = (path: string) => {
     this.history.replace(path);
-  }
+  };
 
   get path() {
     return this.history.location.pathname;
