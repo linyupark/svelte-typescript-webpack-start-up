@@ -1,31 +1,55 @@
-!(function(e, t) {
-  function n() {
-    t.body
-      ? (t.body.style.fontSize = 12 * o + 'px')
-      : t.addEventListener('DOMContentLoaded', n);
+const dpr = window.devicePixelRatio || 1;
+const docEl = document.documentElement;
+
+// adjust body font size
+function setBodyFontSize() {
+  if (document.body) {
+    document.body.style.fontSize =
+      docEl.clientWidth <= 1024 ? 12 * dpr + 'px' : 75 + 'px';
+  } else {
+    document.addEventListener('DOMContentLoaded', setBodyFontSize);
   }
-  function d() {
-    var e =
-      i.clientWidth / (document.documentElement.clientWidth <= 1024 ? 10 : 30);
-    i.style.fontSize = e + 'px';
+}
+
+// set 1rem = viewWidth / 10
+function setRemUnit() {
+  const rem = docEl.clientWidth <= 1024 ? docEl.clientWidth / 10 : 75;
+  docEl.style.fontSize = rem + 'px';
+}
+
+export const flexible = function() {
+  setBodyFontSize();
+  setRemUnit();
+  // reset rem unit on page resize
+  window.addEventListener('resize', setRemUnit);
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      setRemUnit();
+    }
+  });
+
+  // detect 0.5px supports
+  if (dpr >= 2) {
+    var fakeBody = document.createElement('body');
+    var testElement = document.createElement('div');
+    testElement.style.border = '.5px solid transparent';
+    fakeBody.appendChild(testElement);
+    docEl.appendChild(fakeBody);
+    if (testElement.offsetHeight === 1) {
+      docEl.classList.add('hairlines');
+    }
+    docEl.removeChild(fakeBody);
   }
-  var i = t.documentElement,
-    o = e.devicePixelRatio || 1;
-  if (
-    (n(),
-    d(),
-    e.addEventListener('resize', d),
-    e.addEventListener('pageshow', function(e) {
-      e.persisted && d();
-    }),
-    o >= 2)
-  ) {
-    var a = t.createElement('body'),
-      s = t.createElement('div');
-    (s.style.border = '.5px solid transparent'),
-      a.appendChild(s),
-      i.appendChild(a),
-      1 === s.offsetHeight && i.classList.add('hairlines'),
-      i.removeChild(a);
-  }
-})(window, document);
+};
+
+export const noflexible = function() {
+  window.removeEventListener('resize', setRemUnit);
+  window.removeEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      setRemUnit();
+    }
+  });
+  document.body.style.fontSize = null;
+  docEl.style.fontSize = null;
+  document.removeEventListener('DOMContentLoaded', setBodyFontSize);
+};
