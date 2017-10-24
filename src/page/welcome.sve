@@ -1,0 +1,32 @@
+<style>
+  h1 {
+    padding: 20px;
+    margin: 0;
+  }
+  p {
+    padding: 10px 20px;
+  }
+</style>
+
+<h1>
+  Svelte Framework with typescript!
+</h1>
+<p>
+  Welcome, {{ username }}, path: {{ path }}
+  <a href="javascript:;" on:click="goto('/about')">About us</a>
+</p>
+
+<script>
+  import { Route } from  '../'
+  export default {
+    data() {
+      return {
+        username: 'Guest',
+        path: Route.path
+      }
+    },
+    methods: {
+      goto: Route.goto
+    }
+  }
+</script>

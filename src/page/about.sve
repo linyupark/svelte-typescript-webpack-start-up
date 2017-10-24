@@ -1,0 +1,39 @@
+<style>
+  h1 {
+    padding: 20px;
+    margin: 0;
+  }
+  h1.push {
+    animation: fadeIn .3s;
+  }
+  p {
+    padding: 10px 20px;
+  }
+  @keyframes fadeIn {
+    from {
+      transform: translateX(5%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<h1 class="{{ routeAction }}">
+  About us
+</h1>
+<p>
+  This demo create by {{ author }}
+</p>
+
+<script>
+  export default {
+    data() {
+      return {
+        author: 'linyupark@gmail.com'
+      }
+    },
+    oncreate() {
+    }
+  }
+</script>
