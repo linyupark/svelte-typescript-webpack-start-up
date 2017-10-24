@@ -2,10 +2,13 @@
   h1 {
     padding: 20px;
     margin: 0;
+    font-size: 0.64rem;
   }
+
   p {
     padding: 10px 20px;
     line-height: 1.6;
+    font-size: 0.18rem;
   }
 </style>
 
@@ -18,13 +21,20 @@
 </p>
 
 <script>
-  import { Route } from  '../'
+  import { Route } from '../'
+  import { flexible, noflexible } from '../common/rem.750'
   export default {
     data() {
       return {
         username: 'Guest',
         path: Route.path
       }
+    },
+    oncreate() {
+      flexible()
+    },
+    ondestroy() {
+      noflexible()
     },
     methods: {
       goto: Route.goto
