@@ -1,12 +1,12 @@
 <style>
   h1 {
-    padding: 20px;
+    padding: 0.2667rem;
     margin: 0;
     font-size: 0.64rem;
   }
 
   p {
-    padding: 10px 20px;
+    padding: 0.1333rem 0.2667rem;
     line-height: 1.6;
     font-size: 0.18rem;
   }

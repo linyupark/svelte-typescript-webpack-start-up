@@ -49,7 +49,7 @@ class Router {
             });
           })
           .catch(e => {
-            console.error(`Route parse error: ${e.message}`);
+            throw e;
           });
         isMatch = true;
         return;
@@ -89,6 +89,7 @@ class Router {
   get params() {
     return this.pageParams;
   }
+
 }
 
 export default Router;

@@ -1,0 +1,92 @@
+<style>
+  .audioPlayer {
+    width: 100%;
+  }
+
+  .audioPlayer>audio {
+    display: none;
+  }
+
+  .player {
+    width: 99%;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 0.2rem;
+    height: 1.1733rem;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+  }
+
+  .duration {
+    font-size: 0.44rem;
+    color: #0a0a0a;
+    margin-left: 0.2667rem;
+  }
+</style>
+
+<div class="audioPlayer">
+  <div on:click="play()" class="player {{playing}}">
+    <div class="icon" />
+    <span class="duration">
+      {{second}}"
+    </span>
+  </div>
+  <audio ref:audio on:ended="stop()">
+    <source src="{{ src }}" />
+  </audio>
+</div>
+
+<script>
+  import './playing.less';
+  let SingleAudioPlayer = null;
+  export default {
+    data() {
+      return {
+        playing: false,
+        src: '',
+        ms: 0,
+      }
+    },
+    oncreate() {
+      this.observe('src', src => {
+        console.log('Sound changed:', src);
+      });
+    },
+    ondestroy() {
+      SingleAudioPlayer = null;
+    },
+    methods: {
+      play() {
+        // 不是自己且有同类在播放时候，先将其关闭再播放
+        if (SingleAudioPlayer && SingleAudioPlayer != this) {
+          SingleAudioPlayer.stop();
+          SingleAudioPlayer = null;
+        }
+        if (!this.get('playing')) {
+          SingleAudioPlayer = this;
+          this.refs.audio.play();
+          this.set({
+            playing: 'playing'
+          })
+          console.log('player playing!');
+        }
+        else {
+          this.stop();
+        }
+      },
+      stop() {
+        this.refs.audio.pause();
+        this.refs.audio.currentTime = 0;
+        SingleAudioPlayer = null;
+        this.set({
+          playing: false
+        });
+        console.log('player stoped!');
+      }
+    },
+    computed: {
+      second: ms => Math.floor(ms / 1000)
+    }
+  }
+</script>

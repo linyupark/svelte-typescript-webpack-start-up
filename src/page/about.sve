@@ -1,15 +1,20 @@
 <style>
   h1 {
-    padding: 20px;
-    margin: 0;
+    padding: 0;
+    margin: 0.1333rem;
+    font-size: 0.64rem;
   }
+
   h1.push {
     animation: fadeIn .3s;
   }
+
   p {
-    padding: 10px 20px;
+    padding: 0.1333rem 0.2667rem;
     line-height: 1.6;
+    font-size: 0.18rem;
   }
+
   @keyframes fadeIn {
     from {
       transform: translateX(5%);
@@ -25,23 +30,42 @@
 </h1>
 <p>
   This demo created by {{ author }}.
-  <br>
-  params: {{ params }}
-  <br>
-  search: {{ search }}
+  <br> params: {{ params }}
+  <br> search: {{ search }}
+</p>
+
+<h3>Audio Component</h3>
+<p>
+  {{#each [1,2] as n}}
+  <SingleAudioPlayer ms="170926" src="https://nos.netease.com/nim/NDI4MjQ3NQ==/bmltYV8zOTAzNTMyNjBfMTUwNzYxNjA3ODU4Nl85ZDczNmYwNy1mNTI0LTRkZjUtOWM0Yi1hZDg4NDRhZGJjNjM="
+  />
+  {{/each}}
 </p>
 
 <script>
-  import { Route } from  '../'
+  import { Route } from '../'
+  import { flexible, noflexible } from '../common/rem.750'
+  import SingleAudioPlayer from '../component/audioPlayer'
+
   export default {
     data() {
       return {
         author: 'linyupark@gmail.com',
         params: Route.params.join(' '),
-        search: Route.search
+        search: Route.search,
+        audio: null,
       }
     },
     oncreate() {
+      flexible();
+    },
+    ondestroy() {
+      noflexible();
+    },
+    methods: {
+    },
+    components: {
+      SingleAudioPlayer
     }
   }
 </script>

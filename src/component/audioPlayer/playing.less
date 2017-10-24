@@ -1,0 +1,26 @@
+.audioPlayer {
+  .icon {
+    height: 0.4533rem;
+    width: 0.3333rem;
+    background-image: url('./voiceIcon.png');
+    background-position: center;
+    background-size: cover;
+    display: inline-block;
+    margin-left: 0.4rem;
+  }
+  .player.playing > .icon {
+    animation: playing 0.8s ease-in-out infinite;
+  }
+  @keyframes playing {
+    0% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 1;
+      background-image: url('./voiceIcon2.png');
+    }
+    100% {
+      opacity: 0.2;
+    }
+  }
+}
