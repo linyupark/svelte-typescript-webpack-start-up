@@ -4,10 +4,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const WebpackAliyunOssPlugin = require('webpack-aliyun-oss-plugin');
+
+let ossConfig = null;
+try {
+  ossConfig = require('./ossconfig.json');
+} catch (e) {}
 
 let define = {
   // 后面的路径如果需要变为云地址，请自行修改
-  __CDN__: process.env.ENV === 'developer' ? '/dist/' : '/dist/',
+  __CDN__:
+    process.env.ENV === 'developer'
+      ? '/dist/'
+      : `https://assets.51wakeup.com/assets/${new Date().getFullYear()}/h5/${process.env.ENV}`,
   __ENV__: JSON.stringify(process.env.ENV),
   __API__: JSON.stringify(process.env.API || process.env.ENV),
   __VER__: require('./package.json').version
@@ -15,7 +24,7 @@ let define = {
 
 let config = {
   entry: {
-    main: ['./src/index.ts']
+    svelte: ['./src/index.ts']
   },
   output: {
     filename: '[name].js',
@@ -94,6 +103,8 @@ let config = {
 };
 
 if (process.env.ENV === 'developer') {
+
+  // 开发服务器
   config.devServer = {
     port: 8080,
     host: '0.0.0.0',
@@ -102,20 +113,26 @@ if (process.env.ENV === 'developer') {
     publicPath: define.__CDN__,
     stats: 'minimal'
   };
-  config.performance = {
-    hints: false
-  };
-  config.devtool = false;
+
+  config.devtool = 'source-map';
+
+  // 忽略自动刷新监视文件夹
   config.watchOptions = {
     ignored: /node_modules/
   };
 }
 
 if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
-  config.devtool = 'source-map';
+
+  // 打包关闭
+  config.devtool = false;
 
   config.plugins = [].concat(config.plugins, [
+
+    // 优化模块合并
     new webpack.optimize.ModuleConcatenationPlugin(),
+
+    // 压缩脚本
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
@@ -126,16 +143,22 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
         reduce_vars: true
       }
     }),
+
+    // 异步js合并
     new webpack.optimize.CommonsChunkPlugin({
       async: true,
       children: true,
       minChunks: 4
     }),
+
+    // 合并样式
     new ExtractTextPlugin({
       filename: '[name].css',
       disable: false,
       allChunks: true
     }),
+
+    // 压缩gzip
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -144,6 +167,21 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
       minRatio: 0.8
     })
   ]);
+
+  // 上传 oss
+  if (ossConfig) {
+    config.plugins = [].concat(config.plugins, [
+      new WebpackAliyunOssPlugin({
+        ak: ossConfig.ak,
+        sk: ossConfig.sk,
+        bucket: ossConfig.bucket,
+        region: ossConfig.region,
+        filter: function(asset) {
+          return !/\.html$/.test(asset);
+        }
+      })
+    ]);
+  }
 }
 
 module.exports = config;
