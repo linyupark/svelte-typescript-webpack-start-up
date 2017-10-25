@@ -20,6 +20,9 @@ class Router {
   // 页面正则匹配的参数
   private pageParams = [];
 
+  // 取消阻止
+  private unblock = null;
+
   /**
    * 初始化路由
    * @param renderRoot 渲染挂载DOM
@@ -41,6 +44,11 @@ class Router {
         import(`../page/${page.component}`)
           .then(Page => {
             if (this.currentPage) this.currentPage.destroy();
+            // 如果之前有 block 的取消
+            if (this.unblock) {
+              this.unblock();
+              this.unblock = null;
+            }
             this.currentPage = new Page.default({
               target: this.root,
               data: {
@@ -49,7 +57,7 @@ class Router {
             });
           })
           .catch(e => {
-            console.error(`Route parse error: ${e.message}`);
+            throw e;
           });
         isMatch = true;
         return;
@@ -69,13 +77,32 @@ class Router {
     this.pages.push({ rule, component });
   }
 
-  // 移动到某地址
-  goto = (path: string) => {
+  /**
+   * path可以是字符串路径
+   * 也可以是{pathname: '/xx', search: '?x=x'}
+   */
+  goto = (path: any) => {
     this.history.push(path);
   };
 
-  replace = (path: string) => {
+  /**
+   * path可以是字符串路径
+   * 也可以是{pathname: '/xx', search: '?x=x'}
+   */
+  replace = (path: any) => {
     this.history.replace(path);
+  };
+
+  block = (message: any) => {
+    this.unblock = this.history.block(message);
+  };
+
+  methods = (fn: string, params: any) => {
+    try {
+      return this[fn](params);
+    } catch (e) {
+      throw e;
+    }
   };
 
   get path() {
