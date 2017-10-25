@@ -52,9 +52,13 @@
   "scripts": {
     "clean": "rm -rf www/dist/",
     "dev": "npm run clean && ENV=developer node_modules/.bin/webpack-dev-server --progress",
-    "build": "npm run clean && ENV=production node_modules/.bin/webpack --progress",
+    "dev-mock": "npm run clean && ENV=developer API=mock node_modules/.bin/webpack-dev-server --progress",
+    "dev-test": "npm run clean && ENV=developer API=test node_modules/.bin/webpack-dev-server --progress",
+    "build-test": "npm run clean && ENV=test node_modules/.bin/webpack --progress",
+    "build-production": "npm run clean && ENV=production node_modules/.bin/webpack --progress",
     "clean:win": "del /s/q .\\www\\dist",
     "dev:win": "npm run clean:win&&set ENV=developer&&.\\node_modules\\.bin\\webpack-dev-server --progress",
-    "build:win": "npm run clean&&set ENV=production&&.\\node_modules\\.bin\\webpack --progress"
+    "dev-mock:win": "npm run clean:win&&set ENV=developer&&set API=mock&&.\\node_modules\\.bin\\webpack-dev-server --progress",
+    "dev-test:win": "npm run clean:win&&set ENV=developer&&set API=test&&.\\node_modules\\.bin\\webpack-dev-server --progress"
   }
 }

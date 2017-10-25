@@ -88,7 +88,7 @@ let config = {
     new HtmlWebpackPlugin(
       Object.assign(
         {
-          title: 'App',
+          title: '醒来',
           template: './src/index.ejs',
           hash: true,
           favicon: './src/common/asset/favicon.png',

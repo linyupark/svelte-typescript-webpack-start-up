@@ -1,0 +1,58 @@
+<style>
+  .container {
+    height: 2.1333rem;
+    border-radius: 0.2rem;
+    color: #fff;
+    font-size: 0.3733rem;
+    border: 1px solid #e1e1e1;
+    overflow: hidden;
+  }
+  .main {
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+  }
+  .main .icon {
+    margin: 0 0.2667rem 0 0.4rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .container > .sub {
+    height: 0.5333rem;
+    line-height: 0.5333rem;
+    background: #fff;
+  }
+  .container .sub .text {
+    color: #999;
+    font-size: 0.2667rem;
+    margin-left: 0.4rem;
+  }
+</style>
+
+<div class="container" on:click="fire('click')">
+  <div class="main" style="background: {{ bgcolor }}">
+    <div class="icon" style="background-image: url({{icon}})" />
+    <div class="text">{{text}}</div>
+  </div>
+  <div class="sub">
+    <div class="text">{{subText}}</div>
+  </div>
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        bgcolor: '#8478bf',
+        text: '信息主题',
+        subText: '类型信息',
+        icon: '',
+      }
+    },
+    methods: {},
+    components: {}
+  }
+</script>

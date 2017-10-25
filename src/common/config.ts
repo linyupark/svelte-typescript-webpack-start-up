@@ -21,4 +21,8 @@ if (__API__ === 'production') {
   config.apiPrefix = 'http://gateway.51wakeup.com';
 }
 
+if (__API__ === 'mock') {
+  config.apiPrefix = 'https://easy-mock.com/mock/59f08a771bd72e7a8889bb88/'
+}
+
 export default config;
