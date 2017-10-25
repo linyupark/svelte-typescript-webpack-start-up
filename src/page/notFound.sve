@@ -1,0 +1,43 @@
+<style>
+  @import url("https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css");
+  .weui-msg__icon-area > img {
+    maxWidth: '60%';
+  }
+</style>
+
+<div class="weui-msg">
+  <div class="weui-msg__icon-area">
+    <img src={{qrcode}} alt="醒来二维码" />
+  </div>
+  <div class="weui-msg__text-area">
+    <h2 class="weui-msg__title">访问地址不存在</h2>
+    <p class="weui-msg__desc">您所访问的页面地址可能已经转移</p>
+  </div>
+  <div class="weui-msg__opr-area">
+    <p class="weui-btn-area">
+      <a href="javascript:history.back();" class="weui-btn weui-btn_primary">
+        返回上一页
+      </a>
+    </p>
+  </div>
+  <div class="weui-msg__extra-area">
+    <div class="weui-footer">
+      <p class="weui-footer__text">
+        <a href="http://www.51wakeup.com" class="weui-footer__link">
+          醒来
+        </a> · 杭州享贞教育科技有限公司
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import qrcode from '../common/asset/qrcode.png';
+  export default {
+    data() {
+      return {
+        qrcode
+      }
+    }
+  }
+</script>

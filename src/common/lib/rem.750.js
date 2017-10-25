@@ -1,3 +1,12 @@
+/**
+ * 自动根据 dpr 来设置 html font-size 来实现 rem 自动匹配各设备
+ * 目前是强制以 750px 宽度设计稿基准 75px -> 1rem
+ * 在需要支持该特性的 sve 内：
+ * oncreate: flexible()
+ * ondestroy: noflexible()
+ * @author linyu
+ */
+
 const dpr = window.devicePixelRatio || 1;
 const docEl = document.documentElement;
 

@@ -1,9 +1,9 @@
 <style>
-  .audioPlayer {
+  .singleAudioPlayer {
     width: 100%;
   }
 
-  .audioPlayer>audio {
+  .singleAudioPlayer > audio {
     display: none;
   }
 
@@ -25,7 +25,7 @@
   }
 </style>
 
-<div class="audioPlayer">
+<div class="singleAudioPlayer">
   <div on:click="play()" class="player {{playing}}">
     <div class="icon" />
     <span class="duration">

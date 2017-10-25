@@ -1,0 +1,99 @@
+<style>
+  .mergeMsgPage{
+    background: #f4f4f4;
+    padding-bottom: 1.2rem;
+  }
+  .master {
+    background: #fff;
+    padding: 0.2933rem 0.4rem;
+    display: -webkit-flex;
+    display: flex;
+  }
+  .title {
+    font-size: 0.4267rem;
+    font-weight: 300;
+    color: #333;
+    line-height: 1.4;
+    margin-top: 0.0667rem;
+  }
+  .avatar {
+    width: 1.3333rem;
+  }
+  .nickname {
+    font-size: 0.32rem;
+    color: #666;
+  }
+  .gmt {
+    font-size: 0.2667rem;
+    color: #aaa;
+  }
+  .infoContainer {
+    width: 7.8667rem;
+  }
+  .infoContainer > .gmt {
+    margin-top: 0.1333rem;
+  }
+</style>
+
+<div class="mergeMsgPage">
+
+  {{#if data.mergeId}}
+    <!-- up主 -->
+    <div class="master">
+      <div class="avatar">
+        <AvatarRound size="1.0667rem" src={{data.avatar}} />
+      </div>
+      <div class="infoContainer">
+        <div class="title">{{data.title}}</div>
+        <div class="gmt">{{data.gmtCreate}}</div>
+      </div>
+    </div>
+    <div class="msgItems">
+      {{#each data.mergeMsgItems as item, i}}
+        <div class="item">
+          <AvatarRound size="1.0667rem" src={{item.avatar}} />
+        </div>
+      {{/each}}
+    </div>  
+  {{else}}
+    <Loading />
+  {{/if}}
+
+</div>
+
+<script>
+
+  import { Route } from '../';
+  import { flexible, noflexible } from '../common/lib/rem.750';
+  import VideoPlayer from '../component/video/single.sve';
+  import AvatarRound from '../component/avatar/round.sve';
+  import Team from '../model/team';
+  import Loading from '../component/loading/v5.sve';
+
+  export default {
+    data() {
+      return {
+        data: {},
+        avatar: 'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw'
+      }
+    },
+    methods: {
+      async getMergeMsg() {
+        const data = await Team.getMergeMsg(Route.params[0]);
+        this.set({ data: data.response, images: data.images });
+      }
+    },
+    oncreate() {
+      flexible();
+      this.getMergeMsg();
+    },
+    ondestroy() {
+      noflexible();
+    },
+    components: {
+      VideoPlayer,
+      AvatarRound,
+      Loading
+    }
+  }
+</script>
