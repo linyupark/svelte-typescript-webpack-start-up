@@ -1,5 +1,26 @@
 <style>
-
+.singleVideoPlayer {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+.singleVideoPlayer video {
+  max-width: 3.6rem;
+  max-height: 3.6rem;
+  border-radius: 0.2rem;
+}
+.singleVideoPlayer .playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  background-size: 0.6667rem 0.6667rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 </style>
 
 <div class="singleVideoPlayer" on:click="play()">
@@ -11,17 +32,18 @@
     <source src={{src}} />
   </video>
   {{#if loading}}
-  <div className="play-icon">
+  <div class="playIcon">
     <Icon type="loading" color="#999" size="0.4267rem" />
   </div>
   {{else}}
-  <div class="play-icon" style="background-image: url({{videoPlayIcon}})" />
+  <div class="playIcon" style="background-image: url({{videoPlayIcon}})" />
   {{/if}}
 </div>
 
 <script>
   import Icon from '../svg/icon.sve'
   import videoPlayIcon from './playIcon.png';
+  import { isWeixin } from '../../common/util';
   export default {
     data() {
       return {
@@ -29,8 +51,27 @@
         videoPlayIcon
       }
     },
+    oncreate() {
+      this.refs.video.load();
+      if (!isWeixin()) {
+        this.refs.video.oncanplay = () => {
+          this.set({ loading: false });
+        };
+      } else {
+        this.set({ loading: false });
+      }
+    },
     methods: {
-      play() {}
+      play() {
+        if (this.refs.video.requestFullscreen) {
+          this.refs.video.requestFullscreen();
+        } else if (this.refs.video.mozRequestFullScreen) {
+          this.refs.mozRequestFullScreen();
+        } else if (this.refs.video.webkitRequestFullscreen) {
+          this.refs.video.webkitRequestFullscreen();
+        }
+        this.refs.video.play();
+      }
     },
     components: {
       Icon
