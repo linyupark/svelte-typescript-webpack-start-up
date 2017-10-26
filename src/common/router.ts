@@ -1,4 +1,10 @@
-// 这里可以切换 history 类型，默认为 hash 模式
+
+/**
+ * 简单够用的 hash 路由实现
+ * 目前可以支持 某个页面离开时候提醒：oncreate: Route.block('确定要离开吗?')
+ * @author linyu
+ */
+
 import createHistory from 'history/createHashHistory';
 
 interface GotoProps {

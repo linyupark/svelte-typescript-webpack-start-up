@@ -1,14 +1,14 @@
 <style>
-  .audioPlayer {
+  .singleAudioPlayer {
     width: 100%;
   }
 
-  .audioPlayer>audio {
+  .singleAudioPlayer > audio {
     display: none;
   }
 
   .player {
-    width: 99%;
+    width: 100%;
     background: #fff;
     border: 1px solid #e1e1e1;
     border-radius: 0.2rem;
@@ -25,7 +25,7 @@
   }
 </style>
 
-<div class="audioPlayer">
+<div class="singleAudioPlayer">
   <div on:click="play()" class="player {{playing}}">
     <div class="icon" />
     <span class="duration">

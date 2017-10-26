@@ -1,13 +1,19 @@
 * {
   padding: 0;
   margin: 0;
-  overflow: hidden;
+}
+
+html,
+body {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+
+a,
+img {
+  -webkit-touch-callout: none; /* 禁止长按链接与图片弹出菜单 */
 }
