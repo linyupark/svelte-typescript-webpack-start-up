@@ -1,0 +1,32 @@
+<style>
+  #vc-loading {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+  }
+</style>
+
+
+<div id="vc-loading">
+  <Icon type="loading" color="#0be" size="{{size}}" center></Icon>
+</div>
+
+<script>
+  import Icon from '../svg/icon.sve';
+  export default {
+    data() {
+      return {
+        size: "50px"
+      }
+    },
+    components: {
+      Icon
+    }
+  }
+</script>
+
+

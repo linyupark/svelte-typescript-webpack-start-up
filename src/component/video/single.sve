@@ -1,0 +1,39 @@
+<style>
+
+</style>
+
+<div class="singleVideoPlayer" on:click="play()">
+  <video 
+    x5-video-player-type="h5" 
+    poster={{cover}} 
+    ref:video
+  >
+    <source src={{src}} />
+  </video>
+  {{#if loading}}
+  <div className="play-icon">
+    <Icon type="loading" color="#999" size="0.4267rem" />
+  </div>
+  {{else}}
+  <div class="play-icon" style="background-image: url({{videoPlayIcon}})" />
+  {{/if}}
+</div>
+
+<script>
+  import Icon from '../svg/icon.sve'
+  import videoPlayIcon from './playIcon.png';
+  export default {
+    data() {
+      return {
+        loading: true,
+        videoPlayIcon
+      }
+    },
+    methods: {
+      play() {}
+    },
+    components: {
+      Icon
+    }
+  }
+</script>
