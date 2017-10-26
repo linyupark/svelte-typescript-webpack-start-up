@@ -1,0 +1,65 @@
+<div class="fullscreenCarousel">
+
+  <!-- 关闭按钮 -->
+  <div on:click="fire('close')" class="visible">
+    <Icon type="cross" size="0.6667rem" />
+  </div>
+
+  <!-- 滚动区域 -->
+  <div class="carousel">
+    {{#each images as image, i}}
+    <div class="vertical">
+      <img src={{image}} alt="图片{{i}}" /> 
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- 跑马灯位置数字 -->
+  <div class="state">
+    <div class="num">
+      {{startIndex+1}} / {{images.length}}
+    </div>
+  </div>
+</div>
+
+<script>
+
+  import './fullscreen.less';
+  import Icon from '../svg/icon.sve';
+  import Siema from '../../common/lib/siema';
+
+  export default {
+    data() {
+      return {
+        startIndex: 0,
+        images: [],
+        siema: null
+      }
+    },
+    oncreate() {
+      const siema = new Siema({
+        selector: '.carousel',
+        startIndex: this.get('startIndex'),
+        multipleDrag: false,
+        onChange: () => {
+          this.set({
+            startIndex: this.get('siema').currentSlide
+          })
+        }
+      });
+
+      this.set({
+        siema
+      });
+    },
+    ondestroy() {
+      this.set({
+        siema: null
+      })
+    },
+    methods: {},
+    components: {
+      Icon
+    }
+  }
+</script>

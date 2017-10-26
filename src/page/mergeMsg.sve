@@ -104,7 +104,8 @@
         <div class="gmt">{{data.gmtCreate}}</div>
       </div>
     </div>
-    <div class="msgItems">
+
+    <div hidden={{carousel.visible}} class="msgItems">
       {{#each data.mergeMsgItems as item, i}}
         <div class="item">
           <div class="avatar">
@@ -122,12 +123,17 @@
               {{elseif item.type == 1}}
               <!-- 图片 -->
               <div class="img">
-                <img src={{item.body.url}} />
+                <img on:click="openCarousel(item.body.url)" src={{item.body.url}} alt="照片" />
               </div>
               {{elseif item.type == 2}}
               <!-- 音频 -->
               <div class="audio">
                 <AudioPlayer src={{item.body.url}} ms={{item.body.duration}} />
+              </div>
+              {{elseif item.type == 3}}
+              <!-- 视频 -->
+              <div class="video">
+                <VideoPlayer src={{item.body.url}} cover={{item.body.cover}} />
               </div>
               {{elseif item.type == 100 && item.body.type == 7}}
               <!-- 直播 -->
@@ -156,7 +162,17 @@
           </div>
         </div>
       {{/each}}
-    </div>  
+    </div>
+
+    <!-- 轮播图 -->
+    {{#if carousel.visible}}
+    <fullscreenCarousel 
+      images={{images}} 
+      startIndex={{carousel.startIndex}} 
+      on:close="closeCarousel()"
+    />
+    {{/if}}
+
   {{else}}
     <Loading size="0.9rem" />
   {{/if}}
@@ -170,6 +186,7 @@
   import VideoPlayer from '../component/video/single.sve';
   import AudioPlayer from '../component/audio/single.sve';
   import AvatarRound from '../component/avatar/round.sve';
+  import fullscreenCarousel from '../component/carousel/fullscreen.sve';
   import Team from '../model/team';
   import Loading from '../component/loading/vc.sve';
   import MsgContainer from '../component/container/message.sve';
@@ -182,8 +199,13 @@
     data() {
       return {
         data: {},
+        images: [],
         liveIcon,
-        qaIcon
+        qaIcon,
+        carousel: {
+          visible: false,
+          startIndex: 0
+        }
       }
     },
     helpers: {
@@ -192,6 +214,23 @@
       },
     },
     methods: {
+      closeCarousel() {
+        console.log('close')
+        this.set({
+          carousel: {
+            visible: false,
+            startIndex: 0
+          }
+        })
+      },
+      openCarousel(image) {
+        this.set({
+          carousel: {
+            visible: true,
+            startIndex: this.get('images').indexOf(image)
+          }
+        });
+      },
       gotoLive(id) {
         location.href = `//${conf.domain}/index.html?from=singlemessage&isappinstalled=0#/room/${id}`;
       },
@@ -215,7 +254,8 @@
       AudioPlayer,
       AvatarRound,
       Loading,
-      MsgContainer
+      MsgContainer,
+      fullscreenCarousel
     }
   }
 </script>

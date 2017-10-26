@@ -33,7 +33,7 @@
     </span>
   </div>
   <audio ref:audio on:ended="stop()">
-    <source src="{{ src }}" />
+    <source src="{{ src }}" type="audio/mpeg" />
   </audio>
 </div>
 
