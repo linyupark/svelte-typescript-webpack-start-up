@@ -1,0 +1,39 @@
+<style>
+  .bars {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9;
+  }
+</style>
+
+<div hidden={{hidden}} class="bars">
+  <TopNavBar></TopNavBar>
+</div>
+
+
+<script>
+  import TopNavBar from '../component/container/navHeader.sve'
+  export default {
+    data() {
+      return {
+        hidden: true
+      }
+    },
+    oncreate() {
+      this.on('show', () => {
+        this.set({ hidden: false });
+        document.getElementById('app').style.paddingTop = document.querySelector('#header .bars').clientHeight+'px';
+      });
+      this.on('hide', () => {
+        this.set({ hidden: true });
+        document.getElementById('app').style.paddingTop = '0px';
+      });
+    },
+    methods: {},
+    components: {
+      TopNavBar
+    }
+  }
+</script>
