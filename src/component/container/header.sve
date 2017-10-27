@@ -1,0 +1,55 @@
+<style>
+  .bars {
+    position: fixed;
+    width: 10rem;
+    top: 0;
+    box-shadow: 0 1px 2px #999;
+    overflow: hidden;
+    z-index: 9;
+  }
+</style>
+
+
+<!-- 顶部浮动区 -->
+<div hidden={{hidden}} class="bars" ref:bar>
+  <!-- 顶部首页、搜索、用户相关导航 -->
+  {{#if header.indexOf('home')}}
+  <div class="headerHome">
+    <div class="container">
+      <a href="/#/" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
+      <div class="zhiyin"></div>
+      <a href="javascript:;"  class="search"><Icon type="search" size="0.64rem" /></a>
+      <a href="javascript:;"  class="user"><Icon type="user" size="0.64rem" /></a>
+    </div>
+  </div>
+  {{/if}}
+</div>
+
+
+<script>
+  import Icon from '../svg/icon.sve';
+
+  export default {
+    data() {
+      return {
+        header: [],
+        hidden: true
+      }
+    },
+    oncreate() {
+      this.on('show', header => {
+        this.set({ hidden: false, header });
+        document.getElementById('app').style.paddingTop = 
+        this.refs.bar.clientHeight+'px';
+      });
+      this.on('hide', () => {
+        this.set({ hidden: true });
+        document.getElementById('app').style.paddingTop = '0px';
+      });
+    },
+    methods: {},
+    components: {
+      Icon
+    }
+  }
+</script>

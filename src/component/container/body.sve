@@ -1,0 +1,66 @@
+<!-- 主页面区 -->
+<div id="pageContainer" class="{{animation}}" style={{style}}>
+  <slot></slot>
+</div>
+
+<script>
+
+  /**
+   * 容器要实现：
+   * 页面切换简单的动态效果
+   * @style: 特殊样式定义
+   * @header: ['home'] 包裹其的内容可控制是否显示顶部浮动导航
+   * @flexible: boolean 是否启用flexible布局 75px -> 1rem 以 750px宽度设计稿为主（默认启用）
+   * 
+   * TODO: 判断设备环境，实现可自动登录功能
+  **/
+
+  import './body.less';
+  import { Header } from '../../';
+  import { flexible, noflexible } from '../../common/lib/rem.750'
+
+  export default {
+    data() {
+      return {
+        animation: '',
+        style: '',
+        header: [],
+        flexible: true
+      }
+    },
+    oncreate() {
+
+      document.body.setAttribute('style', this.get('style'));
+
+      // 如果是 push 来的页面展现动画效果
+      this.set({
+        animation: this._root.get('Route').action
+      })
+
+      // 启用 flexible 布局
+      if (this.get('flexible')) {
+        console.log('启动 flexible 布局');
+        flexible();
+        this.on('destroy', noflexible);
+      }
+
+      // 当改变 header 属性通知 header 做相应改变
+      this.observe('header', header => {
+        if (!header || header.length === 0) {
+          // 隐藏顶部内容
+          Header.fire('hide');
+          console.log('隐藏 header');
+        }
+        else {
+          Header.fire('show', header);
+          console.log('显示 header', header);
+        }
+      });
+      
+    },
+    methods: {
+      
+    },
+    components: {}
+  }
+</script>

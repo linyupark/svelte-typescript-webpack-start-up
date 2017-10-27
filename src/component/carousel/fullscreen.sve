@@ -1,3 +1,8 @@
+<:Window 
+  on:scroll="prevent(event)" 
+  on:keydown="prevent(event)" 
+  on:mousewheel="prevent(event)" 
+/>
 <div class="fullscreenCarousel">
 
   <!-- 关闭按钮 -->
@@ -9,7 +14,7 @@
   <div class="carousel">
     {{#each images as image, i}}
     <div class="vertical">
-      <img src={{image}} alt="图片{{i}}" /> 
+      <img src={{image}} alt="图片{{i}}" />
     </div>
     {{/each}}
   </div>
@@ -31,12 +36,15 @@
   export default {
     data() {
       return {
+        animation: '',
         startIndex: 0,
+        top: 0,
         images: [],
         siema: null
       }
     },
     oncreate() {
+      console.log('创建跑马灯');
       const siema = new Siema({
         selector: '.carousel',
         startIndex: this.get('startIndex'),
@@ -47,9 +55,10 @@
           })
         }
       });
-
       this.set({
-        siema
+        siema,
+        animation: 'fadein',
+        top: document.body.scrollTop
       });
     },
     ondestroy() {
@@ -57,7 +66,14 @@
         siema: null
       })
     },
-    methods: {},
+    methods: {
+      prevent(event) {
+        event.preventDefault();
+        if(document.body.scrollTop != this.get('top')) {
+          window.scrollTo(0, this.get('top'));
+        }
+      }
+    },
     components: {
       Icon
     }

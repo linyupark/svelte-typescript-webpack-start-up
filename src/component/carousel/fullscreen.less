@@ -1,11 +1,11 @@
 .fullscreenCarousel {
   font-size: 0.48rem;
-  position: absolute;
-  height: 100%;
+  position: fixed;
+  height: 100.1vh;
   width: 100%;
   top: 0;
   left: 0;
-  overflow: scroll;
+  overflow: hidden;
   background: #000;
   z-index: 100;
 
@@ -24,7 +24,8 @@
       justify-content: space-around;
       align-items: center;
       height: 100vh;
-      overflow: scroll;
+      overflow: auto;
+      z-index: 102;
       img {
         max-width: 100%;
       }
