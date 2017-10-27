@@ -15,7 +15,7 @@
    * TODO: 判断设备环境，实现可自动登录功能
   **/
 
-  import './body.less';
+  import './page.less';
   import { Header } from '../../';
   import { flexible, noflexible } from '../../common/lib/rem.750'
 

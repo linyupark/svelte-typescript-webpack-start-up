@@ -9,11 +9,11 @@
   }
 </style>
 
-
+<:Window on:resize="resize()" />
 <!-- 顶部浮动区 -->
 <div hidden={{hidden}} class="bars" ref:bar>
   <!-- 顶部首页、搜索、用户相关导航 -->
-  {{#if header.indexOf('home')}}
+  {{#if header.indexOf('home') >= 0}}
   <div class="headerHome">
     <div class="container">
       <a href="/#/" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
@@ -28,6 +28,7 @@
 
 <script>
   import Icon from '../svg/icon.sve';
+  import './header.less';
 
   export default {
     data() {
@@ -39,15 +40,28 @@
     oncreate() {
       this.on('show', header => {
         this.set({ hidden: false, header });
-        document.getElementById('app').style.paddingTop = 
-        this.refs.bar.clientHeight+'px';
+        this.resize();
       });
       this.on('hide', () => {
         this.set({ hidden: true });
-        document.getElementById('app').style.paddingTop = '0px';
+        this.resize();
       });
     },
-    methods: {},
+    methods: {
+      resize() {
+        const $app = document.getElementById('app');
+        setTimeout(() => {
+          console.log('window resize', this.refs.bar.clientHeight);
+          if(!this.get('hidden')) {
+            $app.style.paddingTop = 
+            this.refs.bar.clientHeight+'px';
+          }
+          else {
+            $app.style.paddingTop = '0px';
+          }
+        }, 0);
+      }
+    },
     components: {
       Icon
     }

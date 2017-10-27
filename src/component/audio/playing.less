@@ -1,4 +1,23 @@
 .singleAudioPlayer {
+  width: 100%;
+  audio {
+    display: none;
+  }
+  .player {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 0.2rem;
+    height: 1.1733rem;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+  }
+  .duration {
+    font-size: 0.44rem;
+    color: #0a0a0a;
+    margin-left: 0.2667rem;
+  }
   .icon {
     height: 0.4533rem;
     width: 0.3333rem;
@@ -11,16 +30,16 @@
   .player.playing > .icon {
     animation: playing 0.8s ease-in-out infinite;
   }
-  @keyframes playing {
-    0% {
-      opacity: 0.2;
-    }
-    50% {
-      opacity: 1;
-      background-image: url('./voiceIcon2.png');
-    }
-    100% {
-      opacity: 0.2;
-    }
+}
+@keyframes playing {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+    background-image: url('./voiceIcon2.png');
+  }
+  100% {
+    opacity: 0.2;
   }
 }

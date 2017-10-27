@@ -2,20 +2,6 @@
   svg {
     vertical-align: middle;
   }
-  .svg-loading {
-    -webkit-animation: loading 1s infinite linear;
-    animation: loading 1s infinite linear;
-  }
-  @keyframes loading {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(359deg);
-      transform: rotate(359deg);
-    }
-  }
 </style>
 
 <svg 
@@ -29,6 +15,7 @@
 </svg>
 
 <script>
+  import './icon.less';
   export default {
     data() {
       return {
