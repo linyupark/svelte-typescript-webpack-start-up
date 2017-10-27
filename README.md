@@ -37,7 +37,7 @@
   - video : 视频相关
   - svg : svg矢量图相关
   - container : 容器ui相关
-    * body.sve, header.sve （这两个是涉及到项目全局的容器，如没有重大调整不用修改名字）
+    * page.sve, header.sve （这两个是涉及到项目全局的容器，如没有重大调整不用修改名字）
   - loading : 不同形态的loading相关
 
 * src/page 页面展示容器组件，用于拼接各子组件，并依赖主路由展示，此目录下引入的模版中可使用 common/router.ts 中的一些共享数据跟方法
@@ -73,10 +73,10 @@ Route: {
 会将页面切割成10份rem，1rem = 75px，推荐使用pxtorem插件来自动实现计算转换。
 项目中需要用到改特性的页面以
 ```
-  import Body from '../component/container/body.sve';
+  import Page from '../component/container/page.sve';
 
   # flexible 不写也可以，默认就是开启
-  <Body flexible={{true}}>...</Body>
+  <Page flexible={{true}}>...</Page>
 ```
 方式启用，且不会影响其他页面。
 

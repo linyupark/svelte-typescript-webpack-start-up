@@ -1,4 +1,4 @@
-<Body 
+<Page 
   header={{['home']}}
   style="background: #f4f4f4; padding-bottom: 1.2rem;"
 >
@@ -7,10 +7,10 @@
       <a href="javascript:;" on:click="fire('routePush', '/share/merge-msg/111')">详情收录</a>
     </li>
   </ul>
-</Body>
+</Page>
 
 <script>
-  import Body from '../component/container/body.sve';
+  import Page from '../component/container/page.sve';
   export default {
     data() {
       return {

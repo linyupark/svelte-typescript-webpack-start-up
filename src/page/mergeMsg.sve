@@ -82,8 +82,9 @@
   }
 </style>
 
-<Body 
+<Page 
   style="background: #f4f4f4; padding-bottom: 1.2rem;"
+  header={{header}}
 >
 
   {{#if data.mergeId}}
@@ -170,11 +171,11 @@
     <Loading size="0.9rem" />
   {{/if}}
 
-</Body>
+</Page>
 
 <script>
 
-  import Body from '../component/container/body.sve';
+  import Page from '../component/container/page.sve';
   import VideoPlayer from '../component/video/single.sve';
   import AudioPlayer from '../component/audio/single.sve';
   import AvatarRound from '../component/avatar/round.sve';
