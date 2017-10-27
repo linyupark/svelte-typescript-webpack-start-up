@@ -11,12 +11,19 @@ try {
   ossConfig = require('./ossconfig.json');
 } catch (e) {}
 
+const ossPath = {
+  production: `pub/`,
+  test: `test/`
+};
+
 let define = {
   // 后面的路径如果需要变为云地址，请自行修改
   __CDN__:
     process.env.ENV === 'developer'
       ? '/dist/'
-      : `https://assets.51wakeup.com/assets/${new Date().getFullYear()}/h5/${process.env.ENV}`,
+      : `https://assets.51wakeup.com/assets/${new Date().getFullYear()}/h5/${ossPath[
+          process.env.ENV
+        ]}`,
   __ENV__: JSON.stringify(process.env.ENV),
   __API__: JSON.stringify(process.env.API || process.env.ENV),
   __VER__: require('./package.json').version
@@ -103,7 +110,6 @@ let config = {
 };
 
 if (process.env.ENV === 'developer') {
-
   // 开发服务器
   config.devServer = {
     port: 8080,
@@ -123,12 +129,10 @@ if (process.env.ENV === 'developer') {
 }
 
 if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
-
   // 打包关闭
   config.devtool = false;
 
   config.plugins = [].concat(config.plugins, [
-
     // 优化模块合并
     new webpack.optimize.ModuleConcatenationPlugin(),
 
@@ -148,7 +152,9 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
     new webpack.optimize.CommonsChunkPlugin({
       async: true,
       children: true,
-      minChunks: 4
+      minChunks: (module, count) => {
+        return count >= 3;
+      }
     }),
 
     // 合并样式

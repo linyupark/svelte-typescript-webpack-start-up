@@ -166,7 +166,7 @@
 
     <!-- 轮播图 -->
     {{#if carousel.visible}}
-    <fullscreenCarousel 
+    <FullscreenCarousel 
       images={{images}} 
       startIndex={{carousel.startIndex}} 
       on:close="closeCarousel()"
@@ -181,12 +181,12 @@
 
 <script>
 
-  import { Route } from '../';
+  import { Route, Header } from '../';
   import { flexible, noflexible } from '../common/lib/rem.750';
   import VideoPlayer from '../component/video/single.sve';
   import AudioPlayer from '../component/audio/single.sve';
   import AvatarRound from '../component/avatar/round.sve';
-  import fullscreenCarousel from '../component/carousel/fullscreen.sve';
+  import FullscreenCarousel from '../component/carousel/fullscreen.sve';
   import Team from '../model/team';
   import Loading from '../component/loading/vc.sve';
   import MsgContainer from '../component/container/message.sve';
@@ -215,7 +215,7 @@
     },
     methods: {
       closeCarousel() {
-        console.log('close')
+        Header.fire('show');
         this.set({
           carousel: {
             visible: false,
@@ -224,6 +224,7 @@
         })
       },
       openCarousel(image) {
+        Header.fire('hide');
         this.set({
           carousel: {
             visible: true,
@@ -244,6 +245,7 @@
     },
     oncreate() {
       flexible();
+      Header.fire('show');
       this.getMergeMsg();
     },
     ondestroy() {
@@ -255,7 +257,7 @@
       AvatarRound,
       Loading,
       MsgContainer,
-      fullscreenCarousel
+      FullscreenCarousel,
     }
   }
 </script>
