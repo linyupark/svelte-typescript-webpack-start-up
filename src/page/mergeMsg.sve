@@ -1,13 +1,4 @@
 <style>
-  .mergeMsgPage{
-    position: absolute;
-    width: 100%;
-    min-height: 100%;
-    background: #f4f4f4;
-    padding-bottom: 1.2rem;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
   .master {
     background: #fff;
     padding: 0.2933rem 0.4rem;
@@ -91,7 +82,9 @@
   }
 </style>
 
-<div class="mergeMsgPage">
+<Body 
+  style="background: #f4f4f4; padding-bottom: 1.2rem;"
+>
 
   {{#if data.mergeId}}
     <!-- up主 -->
@@ -105,7 +98,7 @@
       </div>
     </div>
 
-    <div hidden={{carousel.visible}} class="msgItems">
+    <div class="msgItems">
       {{#each data.mergeMsgItems as item, i}}
         <div class="item">
           <div class="avatar">
@@ -177,12 +170,11 @@
     <Loading size="0.9rem" />
   {{/if}}
 
-</div>
+</Body>
 
 <script>
 
-  import { Route, Header } from '../';
-  import { flexible, noflexible } from '../common/lib/rem.750';
+  import Body from '../component/container/body.sve';
   import VideoPlayer from '../component/video/single.sve';
   import AudioPlayer from '../component/audio/single.sve';
   import AvatarRound from '../component/avatar/round.sve';
@@ -199,6 +191,7 @@
     data() {
       return {
         data: {},
+        header: ['home'],
         images: [],
         liveIcon,
         qaIcon,
@@ -215,8 +208,9 @@
     },
     methods: {
       closeCarousel() {
-        Header.fire('show');
+        console.log('关闭跑马灯')
         this.set({
+          header: ['TopNavBar'],
           carousel: {
             visible: false,
             startIndex: 0
@@ -224,8 +218,9 @@
         })
       },
       openCarousel(image) {
-        Header.fire('hide');
+        console.log('打开跑马灯')
         this.set({
+          header: [],
           carousel: {
             visible: true,
             startIndex: this.get('images').indexOf(image)
@@ -239,17 +234,14 @@
         location.href = `//${conf.domain}/index.html#/question/${id}`;
       },
       async getMergeMsg() {
-        const data = await Team.getMergeMsg(Route.params[0]);
+        const data = await Team.getMergeMsg(this.get('Route').params[0]);
         this.set({ data: data.response, images: data.images });
       }
     },
     oncreate() {
-      flexible();
-      Header.fire('show');
       this.getMergeMsg();
     },
     ondestroy() {
-      noflexible();
     },
     components: {
       VideoPlayer,
@@ -258,6 +250,7 @@
       Loading,
       MsgContainer,
       FullscreenCarousel,
+      Page
     }
   }
 </script>

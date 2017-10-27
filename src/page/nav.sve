@@ -1,0 +1,27 @@
+<Body 
+  header={{['home']}}
+  style="background: #f4f4f4; padding-bottom: 1.2rem;"
+>
+  <ul>
+    <li>
+      <a href="javascript:;" on:click="fire('routePush', '/share/merge-msg/111')">详情收录</a>
+    </li>
+  </ul>
+</Body>
+
+<script>
+  import Body from '../component/container/body.sve';
+  export default {
+    data() {
+      return {
+      }
+    },
+    helpers: {
+    },
+    methods: {
+    },
+    components: {
+      Page
+    }
+  }
+</script>

@@ -152,9 +152,7 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
     new webpack.optimize.CommonsChunkPlugin({
       async: true,
       children: true,
-      minChunks: (module, count) => {
-        return count >= 3;
-      }
+      minChunks: 4
     }),
 
     // 合并样式

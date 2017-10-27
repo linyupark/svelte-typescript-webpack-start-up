@@ -1,4 +1,3 @@
-
 /**
  * 简单够用的 hash 路由实现
  * 目前可以支持 某个页面离开时候提醒：oncreate: Route.block('确定要离开吗?')
@@ -13,6 +12,7 @@ interface GotoProps {
 }
 
 class Router {
+  
   private history = createHistory();
 
   // 挂载点
@@ -49,18 +49,48 @@ class Router {
         this.pageParams = matched.splice(1);
         import(`../page/${page.component}`)
           .then(Page => {
+
+            // 要传递给页面组件的数据
+            const data = {
+              Route: {
+                action: (action && action.toLowerCase()) || '',
+                pathname,
+                params: this.pageParams,
+                search: this.history.location.search
+              }
+            };
+
+            // 销毁上一页组件
             if (this.currentPage) this.currentPage.destroy();
+
             // 如果之前有 block 的取消
             if (this.unblock) {
               this.unblock();
               this.unblock = null;
             }
+
+            // 挂载页面组件
             this.currentPage = new Page.default({
-              target: this.root,
-              data: {
-                routeAction: (action && action.toLowerCase()) || ''
-              }
+              target: this.root, data
             });
+
+            // 强制回到顶部
+            window.scrollTo(0, 0);
+
+            // 页面主动跳转
+            this.currentPage.on('routePush', data => {
+              this.history.push(data);
+            });
+
+            // 页面替换
+            this.currentPage.on('routeReplace', data => {
+              this.history.replace(data);
+            });
+
+            // 页面跳转阻止
+            this.currentPage.on('routeBlock', message => {
+              this.unblock = this.history.block(message);
+            })
           })
           .catch(e => {
             throw e;
@@ -83,45 +113,6 @@ class Router {
     this.pages.push({ rule, component });
   }
 
-  /**
-   * path可以是字符串路径
-   * 也可以是{pathname: '/xx', search: '?x=x'}
-   */
-  goto = (path: any) => {
-    this.history.push(path);
-  };
-
-  /**
-   * path可以是字符串路径
-   * 也可以是{pathname: '/xx', search: '?x=x'}
-   */
-  replace = (path: any) => {
-    this.history.replace(path);
-  };
-
-  block = (message: any) => {
-    this.unblock = this.history.block(message);
-  };
-
-  methods = (fn: string, params: any) => {
-    try {
-      return this[fn](params);
-    } catch (e) {
-      throw e;
-    }
-  };
-
-  get path() {
-    return this.history.location.pathname;
-  }
-
-  get search() {
-    return this.history.location.search;
-  }
-
-  get params() {
-    return this.pageParams;
-  }
 }
 
 export default Router;
