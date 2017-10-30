@@ -1,0 +1,59 @@
+<!-- 
+  登录组件，可通过page中引入来实现触发登录或自动登录
+  未来可根据需求变化登录规则
+-->
+
+
+<script>
+
+  import { isWeixin } from '../../common/util';
+  import { Weixin } from '../../';
+
+  export default {
+    data() {
+      return {
+        status: '',
+        // 自动登录
+        auto: false,
+      }
+    },
+    oncreate() {
+
+      // 各设备探测是否已经登录
+      if (isWeixin() && Weixin.isLogined) {
+        console.log('已登录微信');
+        this.set({ status: 'logined' });
+      }
+
+      // 尝试自动登录
+      if (this.get('auto') && this.get('status') !== 'logined') {
+        isWeixin() && this.weixin();
+      }
+
+      // 特殊情况（微信获取到code跳转后，需要再次请求token）
+      if(isWeixin() && Weixin.code) {
+        this.weixin();
+      }
+
+    },
+    methods: {
+      async weixin() {
+        // 登录微信
+        console.log('开始登录微信');
+        this.set({ status: 'login' });
+        console.log('开始获取token');
+        const token = await Weixin.getToken();
+        if (token) {
+          console.log('微信token:', token);
+          this.set({
+            status: 'logined'
+          });
+          Weixin.getUser();
+          console.log('微信登录完成');
+        }
+      }
+    },
+    components: {
+    }
+  }
+</script>

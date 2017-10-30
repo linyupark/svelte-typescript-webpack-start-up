@@ -84,7 +84,6 @@
 
 <Page 
   style="background: #f4f4f4; padding-bottom: 1.2rem;"
-  header={{header}}
 >
 
   {{#if data.mergeId}}
@@ -192,7 +191,6 @@
     data() {
       return {
         data: {},
-        header: ['home'],
         images: [],
         liveIcon,
         qaIcon,
@@ -211,7 +209,6 @@
       closeCarousel() {
         console.log('关闭跑马灯')
         this.set({
-          header: ['TopNavBar'],
           carousel: {
             visible: false,
             startIndex: 0
@@ -221,7 +218,6 @@
       openCarousel(image) {
         console.log('打开跑马灯')
         this.set({
-          header: [],
           carousel: {
             visible: true,
             startIndex: this.get('images').indexOf(image)

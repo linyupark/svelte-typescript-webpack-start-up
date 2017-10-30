@@ -22,9 +22,6 @@
       }
     },
     oncreate() {
-      this.observe('src', src => {
-        console.log('Sound changed:', src);
-      });
     },
     ondestroy() {
       SingleAudioPlayer = null;
