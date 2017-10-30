@@ -1,0 +1,50 @@
+.fullscreenCarousel {
+  font-size: 0.48rem;
+  position: fixed;
+  height: 100.1vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background: #000;
+  z-index: 100;
+
+  .visible {
+    position: fixed;
+    top: 0.3333rem;
+    left: 0.2rem;
+    color: #fff;
+    z-index: 101;
+  }
+
+  .carousel {
+    -webkit-overflow-scrolling: touch;
+    .vertical {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      overflow: auto;
+      z-index: 102;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .state {
+    position: fixed;
+    bottom: 0.3333rem;
+    width: 100%;
+    text-align: center;
+    z-index: 101;
+    .num {
+      min-width: 0.8rem;
+      padding: 0.12rem 0.3333rem;
+      border-radius: 0.2667rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+  }
+}

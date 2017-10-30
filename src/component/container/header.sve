@@ -1,0 +1,73 @@
+<style>
+  .bars {
+    position: fixed;
+    width: 10rem;
+    top: 0;
+    box-shadow: 0 1px 2px #999;
+    overflow: hidden;
+    z-index: 9;
+  }
+</style>
+
+<:Window on:resize="resize()" />
+<!-- 顶部浮动区 -->
+<div hidden={{hidden}} class="bars" ref:bar>
+  <!-- 顶部首页、搜索、用户相关导航 -->
+  {{#if header.indexOf('home') >= 0}}
+  <div class="headerHome">
+    <div class="container">
+      <a href="/#/home" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
+      <div class="zhiyin"></div>
+      <a href="javascript:;"  class="search"><Icon type="search" size="0.64rem" /></a>
+      <a href="javascript:;"  class="user"><Icon type="user" size="0.64rem" /></a>
+    </div>
+  </div>
+  {{/if}}
+</div>
+
+
+<script>
+  import Icon from '../svg/icon.sve';
+  import './header.less';
+
+  export default {
+    data() {
+      return {
+        header: [],
+        hidden: true
+      }
+    },
+    oncreate() {
+      this.on('show', header => {
+        this.set({ 
+          hidden: false, 
+          header: header || this.get('header') 
+        });
+        this.resize();
+      });
+      this.on('hide', () => {
+        this.set({ hidden: true });
+        this.resize();
+      });
+    },
+    methods: {
+      resize() {
+        if(!this) return;
+        const $app = document.getElementById('app');
+        console.log('窗口改变', this.refs.bar.clientHeight);
+        setTimeout(() => {
+          if(!this.get('hidden')) {
+            $app.style.paddingTop = 
+            this.refs.bar.clientHeight+'px';
+          }
+          else {
+            $app.style.paddingTop = '0px';
+          }
+        }, 10);
+      }
+    },
+    components: {
+      Icon
+    }
+  }
+</script>

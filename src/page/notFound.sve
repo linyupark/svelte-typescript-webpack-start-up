@@ -33,11 +33,15 @@
 
 <script>
   import qrcode from '../common/asset/qrcode.png';
+  import { Header } from '../';
   export default {
     data() {
       return {
         qrcode
       }
+    },
+    oncreate() {
+      Header.fire('hide');
     }
   }
 </script>

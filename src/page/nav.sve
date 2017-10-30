@@ -1,0 +1,37 @@
+<Page flexible={{false}} style="background: #f4f4f4; padding-bottom: 1.2rem;">
+  <Login ref:login />
+  <ul hidden={{loginStatus=='login'}}>
+    <li>
+      <a href="javascript:;" on:click="fire('routePush', '/share/merge-msg/111')">详情收录</a>
+      <a href="javascript:;" on:click="fire('routePush', '/home')">指引首页</a>
+      <a href="javascript:;" on:click="loginWeixin()" hidden={{loginStatus=='logined'}}>微信登录</a>
+    </li>
+  </ul>
+</Page>
+
+<script>
+  import Page from '../component/container/page.sve';
+  import Login from '../component/login/index.sve';
+  export default {
+    data() {
+      return {
+        loginStatus: ''
+      }
+    },
+    oncreate() {
+      this.refs.login.observe('status', status => {
+        this.set({ loginStatus: status })
+      });
+    },
+    helpers: {
+    },
+    methods: {
+      loginWeixin() {
+        this.refs.login.weixin();
+      }
+    },
+    components: {
+      Page, Login
+    }
+  }
+</script>

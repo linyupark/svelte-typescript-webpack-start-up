@@ -1,0 +1,44 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  touch-action: manipulation;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, STHeiTi, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+#app, #header {
+  margin: 0 auto;
+  width: 10rem;
+}
+
+// 页面主容器
+#pageContainer {
+  position: absolute;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 auto;
+  -webkit-overflow-scrolling: touch;
+  &.push {
+    animation: fadeIn 0.3s ease-in;
+  }
+}
+
+// 页面载入效果
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
