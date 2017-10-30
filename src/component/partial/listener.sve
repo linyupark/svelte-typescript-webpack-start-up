@@ -1,0 +1,38 @@
+
+<div class="partialListener" style="{{style}}">
+  <div class="totalNum">共有{{totalNum}}人听过</div>
+  <div class="avatar">
+    {{#each avatarList as avatar}}
+    <div class="item" style="background-image: url({{avatar}})"></div>
+    {{/each}}
+  </div>
+</div>
+
+<script>
+  import './listener.less';
+  export default {
+    data() {
+      return {
+        style: '',
+        totalNum: 0,
+        avatarList: [
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw','https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw','https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+          'https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw','https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw',
+        ]
+      }
+    },
+    methods: {},
+    components: {}
+  }
+</script>

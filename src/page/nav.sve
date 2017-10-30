@@ -1,4 +1,10 @@
-<Page flexible={{false}} style="background: #f4f4f4; padding-bottom: 1.2rem;">
+<style>
+  ul{
+    font-size: 0.24rem;
+  }
+</style>
+
+<Page style="background: #f4f4f4; padding-bottom: 1.2rem;">
   <Login ref:login />
   <ul hidden={{loginStatus=='login'}}>
     <li>
@@ -7,11 +13,15 @@
       <a href="javascript:;" on:click="loginWeixin()" hidden={{loginStatus=='logined'}}>微信登录</a>
     </li>
   </ul>
+  <Listener totalNum="3541" style="border-bottom: 1px solid #eee;"></Listener>
+  <Useful ref:useful></Useful>
 </Page>
 
 <script>
   import Page from '../component/container/page.sve';
   import Login from '../component/login/index.sve';
+  import Useful from '../component/partial/useful.sve';
+  import Listener from '../component/partial/listener.sve';
   export default {
     data() {
       return {
@@ -22,6 +32,12 @@
       this.refs.login.observe('status', status => {
         this.set({ loginStatus: status })
       });
+      this.refs.useful.on('useful', () => {
+        console.log('感觉有用')
+      });
+      this.refs.useful.on('useless', () => {
+        console.log('感觉无用')
+      });
     },
     helpers: {
     },
@@ -31,7 +47,7 @@
       }
     },
     components: {
-      Page, Login
+      Page, Login, Useful, Listener
     }
   }
 </script>
