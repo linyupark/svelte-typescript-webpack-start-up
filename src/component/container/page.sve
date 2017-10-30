@@ -22,6 +22,7 @@
   export default {
     data() {
       return {
+        title: '醒来',
         animation: '',
         style: '',
         header: [],
@@ -31,6 +32,7 @@
     oncreate() {
 
       document.body.setAttribute('style', this.get('style'));
+      document.title = this.get('title');
 
       // 如果是 push 来的页面展现动画效果
       this.set({
