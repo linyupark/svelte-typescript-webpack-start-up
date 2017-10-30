@@ -80,8 +80,12 @@ class WeiXin {
 
   // 检查是否已经登录
   get isLogined() {
-    // 如果 search中包含code，是会立刻执行登录操作的，因此可视为已经进入登录
-    return search2obj(location.search).code || this.token || this.user.userId;
+    return this.token || this.user.userId;
+  }
+
+  // 如果地址栏中包含了code
+  get code() {
+    return search2obj(location.search).code;
   }
 
   // 设置用户信息
@@ -101,13 +105,13 @@ class WeiXin {
   async getToken() {
     const search = search2obj(location.search);
     if (this.token) return this.token;
-    if (search.code) {
+    if (this.code) {
       // 包含?code=xxx直接获取token
-      console.log('code', search.code);
+      console.log('code', this.code);
       try {
         const response = await API('post', '/api/authorization/code', {
           data: {
-            code: search.code
+            code: this.code
           }
         });
         // 改变了search页面刷新了，状态失效，改用sessionStorage
@@ -116,8 +120,7 @@ class WeiXin {
         // 去掉code search，回到原来的地址
         delete search.code;
         delete search.state;
-        // console.log(serialize(search))
-        location.search = serialize(search);
+        location.search = '';
       } catch (e) {
         alert('获取token失败');
       }

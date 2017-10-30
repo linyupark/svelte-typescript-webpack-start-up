@@ -12,9 +12,11 @@ const Header = new HeaderContainer({
 });
 
 Route.page(/^\/share\/merge-msg\/(\d+)/, 'mergeMsg.sve');
-Route.page(/^\/$/, 'nav.sve');
+// 开发模式下允许匹配的路由
+if(__ENV__ === 'developer') {
+  Route.page(/^\/$/, 'nav.sve');
+}
 Route.page(/.*/, 'notFound.sve');
-
 Route.start();
 
 export { Route, Weixin, Header };

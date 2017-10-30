@@ -39,7 +39,10 @@
     },
     oncreate() {
       this.on('show', header => {
-        this.set({ hidden: false, header });
+        this.set({ 
+          hidden: false, 
+          header: header || this.get('header') 
+        });
         this.resize();
       });
       this.on('hide', () => {
@@ -49,9 +52,10 @@
     },
     methods: {
       resize() {
+        if(!this) return;
         const $app = document.getElementById('app');
+        console.log('窗口改变', this.refs.bar.clientHeight);
         setTimeout(() => {
-          console.log('window resize', this.refs.bar.clientHeight);
           if(!this.get('hidden')) {
             $app.style.paddingTop = 
             this.refs.bar.clientHeight+'px';
@@ -59,7 +63,7 @@
           else {
             $app.style.paddingTop = '0px';
           }
-        }, 0);
+        }, 10);
       }
     },
     components: {
