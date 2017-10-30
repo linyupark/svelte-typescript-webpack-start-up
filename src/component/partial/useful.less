@@ -1,0 +1,44 @@
+.partialUseful {
+  height: 2.36rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 10rem;
+  background: #fff;
+  .col {
+    width: 50%;
+    text-align: center;
+    .icon {
+      width: 0.72rem;
+      height: 0.72rem;
+      display: inline-block;
+      background-position: center;
+      background-size: 0.6933rem 0.72rem;
+      vertical-align: middle;
+    }
+    // 有用没用的数字
+    .num {
+      height: 0.72rem;
+      line-height: 0.72rem;
+      font-size: 0.4267rem;
+      &.no {
+        color: #ff5c58;
+      }
+      &.yes {
+        color: #32ba8f;
+      }
+    }
+    // 灰色按钮（未来可考虑全局复用）
+    .btn {
+      height: 0.6133rem;
+      line-height: 0.6133rem;
+      width: 1.52rem;
+      text-align: center;
+      border: 1px solid #eee;
+      color: #666;
+      background: #fff;
+      font-size: 0.32rem;
+      border-radius: 0.3067rem;
+    }
+  }
+}
