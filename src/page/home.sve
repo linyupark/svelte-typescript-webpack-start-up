@@ -1,0 +1,32 @@
+<!-- 指引首页 -->
+<Page 
+  title='指引'
+  header={{header}}
+  style="background: #e8e8e8;"
+>
+
+  <!-- 视频区域 -->
+  {{#each videoList as v}}
+  <div class="videoCard">
+    
+  </div>
+  {{/each}}
+
+
+</Page>
+
+<script>
+  import Page from '../component/container/page.sve';
+  export default {
+    data() {
+      return {
+        header: ['home'],
+        videoList: [],
+      }
+    },
+    methods: {},
+    components: {
+      Page
+    }
+  }
+</script>

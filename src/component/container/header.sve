@@ -16,7 +16,7 @@
   {{#if header.indexOf('home') >= 0}}
   <div class="headerHome">
     <div class="container">
-      <a href="/#/" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
+      <a href="/#/home" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
       <div class="zhiyin"></div>
       <a href="javascript:;"  class="search"><Icon type="search" size="0.64rem" /></a>
       <a href="javascript:;"  class="user"><Icon type="user" size="0.64rem" /></a>
