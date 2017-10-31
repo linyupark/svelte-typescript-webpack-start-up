@@ -1,0 +1,68 @@
+
+<style>
+  .header{
+    height: 1.3333rem;
+    line-height: 1.3333rem;
+    text-align: center;
+    font-size: 0.48rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+  }
+  .close {
+    width: 1.3333rem;
+    height: 1.3333rem;
+    line-height: 1.3333rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .payBtn{
+    border: none;
+    margin: 0.5333rem;
+    background: #138BE9;
+    height: 1.0667rem;
+    line-height: 1.0667rem;
+    color: #fff;
+    text-align: center;
+    display: block;
+    font-size: 0.48rem;
+    border-radius: 1.0667rem;
+  }
+</style>
+
+<ActionSheet ref:actionSheet type="full">
+  <div slot="head">
+    <div class="header">
+      <div class="close" on:click="close()">
+        <Icon type="cross" size="0.4rem" />
+      </div> 结算
+    </div>
+  </div>
+  <div slot="content">
+    asd
+  </div>
+  <div slot="button">
+    <a href="javascript:;" class="payBtn">确认支付</a>
+  </div>
+</ActionSheet>
+
+<script>
+  import Icon from '../svg/icon.sve';
+  import ActionSheet from '../actionSheet/basic.sve';
+  export default {
+    data() {
+      return {}
+    },
+    methods: {
+      close() {
+        this.refs.actionSheet.close();
+      },
+      open() {
+        this.refs.actionSheet.open();
+      }
+    },
+    components: {
+      ActionSheet, Icon
+    }
+  }
+</script>

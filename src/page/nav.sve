@@ -4,7 +4,7 @@
   }
 </style>
 
-<Page style="background: #f4f4f4;">
+<Page style="background: #f4f4f4; height: 2000px;">
   <Login ref:login />
   <ul hidden={{loginStatus=='login'}}>
     <li>
@@ -16,6 +16,11 @@
   <Listener totalNum="3541" style="border-bottom: 1px solid #eee;"></Listener>
   <Useful ref:useful></Useful>
   <JoinGroup groupName="用心守护宝宝成长，全职妈妈在期待中前行" avatar="https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw"></JoinGroup>
+
+  <button on:click="refs.actionSheet.open()">open</button>
+  <PayActionSheet ref:actionSheet>
+  </PayActionSheet>
+
 </Page>
 
 <script>
@@ -24,6 +29,7 @@
   import Useful from '../component/partial/useful.sve';
   import Listener from '../component/partial/listener.sve';
   import JoinGroup from '../component/partial/joinGroup.sve';
+  import PayActionSheet from '../component/partial/payActionSheet.sve';
   export default {
     data() {
       return {
@@ -49,7 +55,7 @@
       }
     },
     components: {
-      Page, Login, Useful, Listener, JoinGroup
+      Page, Login, Useful, Listener, JoinGroup, PayActionSheet
     }
   }
 </script>
