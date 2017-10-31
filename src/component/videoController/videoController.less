@@ -1,0 +1,82 @@
+  .VideoControllComponent{
+    display: flex;
+    align-items:center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.38rem;
+    color: #fff;
+    padding: 0.3rem 0.1333rem;
+    
+    .playBtn{
+        width: 0.8rem;
+        .playIcon{
+          display: block;
+          margin: 0 auto;
+          width: 0.24rem;
+          height: 0.48rem;
+          background: url(./play.png) no-repeat scroll;
+          background-size: 0.24rem 0.48rem;
+          transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+        }
+        .pauseIcon{
+            display: block;
+            margin: 0 auto;
+            width: 0.24rem;
+            height: 0.48rem;
+            background: url(./play.png) no-repeat scroll;
+            background-size: 0.24rem 0.48rem;
+             
+        }
+    }
+    .currentTime{
+        width: 0.8rem; 
+    }
+    .durationTime{
+        width: 0.8rem;
+    }
+    .fullScreen{
+        width: 0.8rem;
+        i{
+          display: block;
+          margin: 0 auto;
+          width: 0.48rem;
+          height: 0.48rem;
+          background: url(./fullscreen.png) no-repeat scroll;
+          background-size: 0.48rem 0.48rem;
+        }
+    }
+    //进度条容器
+    .processWrapper{
+        flex-grow: 1;
+        margin:0 10px;
+        padding: 0.2rem 0;
+        position: relative;
+        .processBar{
+          background: #ABA8B4;
+          border: none;
+          height: 2px;
+          transform:translateY(-50%);
+
+          .palyBar{
+            background: #fff;
+            height: 2px;
+          }
+          .circle{
+              position: absolute;
+              top: 50%;
+              display: block;
+              width: 14px;
+              height: 14px;
+              background: #fff;
+              position: absolute;
+              transform: translateY(-50%);
+              border-radius: 50%;
+              left: 0;
+              opacity: 1;
+              cursor: pointer;
+          }
+        }
+        
+    }
+}

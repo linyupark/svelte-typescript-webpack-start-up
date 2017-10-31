@@ -1,0 +1,110 @@
+  
+  .pullBarComponent{
+    position: relative;
+    background: #fff;
+    
+    .barWrapper{
+      overflow-x: auto;
+      height: 1.0667rem;
+      line-height: 1.0667rem;
+   
+      &::-webkit-scrollbar {
+        display:none;
+      }
+      ul{
+        list-style: none;
+        padding-left:0.4rem;
+        display: flex;
+        flex-wrap:nowrap;
+        li{
+          margin-left:0.4rem;
+          white-space: nowrap;
+          font-size: 0.48rem;
+          &.active{
+            color: #59A2E0;
+          }
+          &:first-child{
+            margin-left: 0;
+          }
+          &:last-child{
+            &:after{
+              content:'';
+              padding-right:40px;
+            }
+            
+          }
+        }
+      }
+      .moreWrapper{
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 40px;
+          height: 100%;
+          background: linear-gradient(to right,rgba(255,255,255,0.1),rgba(255,255,255,0.5), #fff);
+         
+          &:after{
+            content:' ';
+            width: 10px;
+            height: 100%;
+          }
+      
+          .moreBtn{
+            display: block;
+            width: 0.4rem;
+            height: 0.4rem;   
+            background-image: url(./add.png);
+            background-repeat:no-repeat;
+            background-attachment: scroll;
+            background-size:0.4rem 0.4rem;
+            position: absolute;
+            right:0.4rem;
+            top:0.33rem; 
+          }
+      }
+    }
+    .pullWrapper{
+      position: absolute; 
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: 8;
+      background: #fff;
+      font-size: 0.48rem;
+      transition: all 0.2s ease-in ;
+      -webkit-transition: all 0.2s ease-in ;
+      overflow: hidden;
+      
+     
+        .title{
+          position: relative;
+          height: 0.5333rem;
+          line-height: 0.5333rem;
+        }
+        i{
+          display: block;
+          width: 0.4rem;
+          height: 0.4rem;
+          position: fixed;
+          z-index: 10;
+          right: 0.4rem;
+          margin-top: 0.33rem;
+          background: url(./add.png) no-repeat scroll;
+          background-size:0.4rem 0.4rem;
+          transition: transform 0.25s ease;
+
+        }
+     
+      }
+      .bg{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom:0;
+        background: rgba(0,0,0,0.2);
+        z-index: -1;
+        transition:opacity 0.2s ease;
+        -webkit-transition:opacity 0.2s ease;
+      }
+  }

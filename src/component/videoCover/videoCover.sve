@@ -1,0 +1,75 @@
+<div class="videoCoverComponent">
+  <video ref:video on:touchstart='videoTouch()' src="./video.mp4"></video>
+  <div class="videoImg" style='display:{{coverShow?"block":"none"}}'></div>
+  <div class="videoBtn" style='display:{{coverShow?"block":"none"}}'  on:click='play()'></div>
+  <div class="videoControllerWrapper" style='display:{{controllerShow?"block":"none"}}'>
+      <videoController ref:videoControllerComponent ele={{videoDom}}></videoController>
+  </div>
+</div>
+
+<script>
+  import './videoCover.less';
+  //引入视频控制条组件
+  import videoController from '../videoController/videoController.sve';
+
+  export default {
+    data() {
+      return {
+        coverShow:true,//封面的隐藏显示状态
+        controllerShow:false,//控制条的隐藏显示状态 
+        timeout:undefined,//定时器指针
+        videoDom: null,//video DOM元素
+      }
+    },
+    methods: {
+      //单击背景图通知控制条组件执行播放
+      play(){
+        this.set({
+          coverShow:false,//将封面隐藏
+          controllerShow:true//将控制条显示
+        });
+        //通知控制条组件执行播放
+        this.refs.videoControllerComponent.fire('play');
+        //2.5秒后控制条自动隐藏
+        this.set({
+          timeout:setTimeout(()=>{
+              this.set({controllerShow:false});
+          },2500)
+        })
+      },
+      //单击了视频，则让控制条显示
+      videoTouch(){
+        //清楚之间的定时器  
+        clearTimeout(this.get('timeout'));
+        //让控制条显示，并设置新的隐藏定时器
+        this.set({
+          controllerShow:true,
+          timeout:setTimeout(()=>{
+            this.set({controllerShow:false});
+          },2500)
+        });
+      }
+    },
+    oncreate(){
+      this.set({
+        videoDom: this.refs.video
+      })
+      //监听控制组件的事件
+      this.refs.videoControllerComponent.on('touchDown',()=>{
+        //只要触摸了控制条，则清楚隐藏定时器
+        clearTimeout(this.get('timeout'));
+      });
+      this.refs.videoControllerComponent.on('touchUp',()=>{
+        //手指从控制条松开后，则设置定时器隐藏
+        this.set({
+          timeout:setTimeout(()=>{
+            this.set({controllerShow:false});
+          },2500)
+        });
+      })
+    },
+    components: {
+      videoController
+    }
+  }
+</script>

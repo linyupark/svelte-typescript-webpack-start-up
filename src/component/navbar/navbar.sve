@@ -1,0 +1,140 @@
+<:Window 
+  on:touchmove="prevent(event)"
+/>
+<div class="pullBarComponent" >
+  <div class="barWrapper">
+    <ul>
+      {{#each arr as v,i}}
+        <li class='{{active===i?"active":""}}' on:click='itemChange(v,i)'>{{v}}</li>
+      {{/each}}
+    </ul>
+    <div class="moreWrapper">
+      <i class="moreBtn" on:click='pulldown(true)'></i>
+    </div>
+  </div>
+  <!-- 遮罩层 -->
+  <div class="bg" style='display:{{bgShow?"block":"none"}};opacity:{{bgOpacity}};'></div>
+  <!-- 弹出内容层 -->
+  <div class="pullWrapper" style='transform:translateY({{move}});'>
+      <i on:click='pulldown(false)' style='display:{{iconCloseShow?"block":"none"}};transform: rotate({{iconCloseRotate}}deg);'></i>
+      <div>
+        <div class="title">
+          <span>标题栏</span>
+        </div>
+        <p>内容1</p>
+        <p>内容2</p>
+        <p>内容3</p>
+        <p>内容4</p>
+        <p>内容5</p>
+      </div> 
+  </div>
+</div>
+
+
+<script>
+  import './navbar.less';
+  //import { flexible, noflexible } from '../../common/lib/rem.750';
+  import { Route } from '../../';
+  
+  /*
+  *事件
+  *发送：change事件（切换了对导航项的选择则发送该事件）
+  *接收：active事件（外部变动后需要让当前组件的列表项也自动切换到其他项目选中，则发送该事件）
+  */
+
+
+  export default {
+    data(){
+      return {
+        arr:['快学','问答','婚姻情感','亲子','生活','职场','自定义','自定义','自定义','自定义','自定义'],//数据
+        active:0,//默认选中导航中第几项目
+
+        bgShow:false,//遮罩层是否显示
+        bgOpacity:0,//遮罩层透明度
+        move:'-100%',//浮层移动距离
+        iconCloseShow:false,//浮层关闭按钮是否显示
+        iconCloseRotate:0,//浮层关闭按钮旋转角度
+      }
+    },
+    methods:{
+      
+      //window禁止页面滚动
+      prevent(event) {
+        if(this.get('bgShow')){
+          event.preventDefault();
+        }
+      },
+      //导航项选中
+      itemChange(v,i){
+        this.set({
+          active:i
+        });
+        //发送事件通知
+        this.fire('change',{
+          name:v,
+          index:i
+        })
+      },
+      //点击加号按钮展开下拉浮层
+      pulldown(flag){   
+          //打开
+          if(flag){
+            //展开下拉框与显示遮罩层
+            this.set({
+              bgShow:true,
+              move:'0%'        
+            });
+            setTimeout(()=>{
+              this.set({
+                bgOpacity:1,
+              })
+            },30);
+            setTimeout(()=>{
+              this.set({
+                iconCloseShow:true,
+              })
+            },300)
+            setTimeout(()=>{
+              this.set({
+                iconCloseRotate:45
+              })
+            },330);
+            /*
+            //禁止页面滚动
+            setTimeout(()=>{
+              //禁止页面滚动
+              //document.body.style.cssText='position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden;height:'+window.innerHeight+'px;background: rgb(232, 232, 232); font-size: 36px;';
+            },250);
+            */
+          //关闭
+          }else{
+            this.set({
+              bgOpacity:0,
+              move:"-100%",
+              iconCloseShow:false
+            })
+            setTimeout(()=>{
+              this.set({
+                bgShow:false,
+                iconCloseRotate:0
+              })
+            },250)
+          }
+          
+      }
+    },
+    oncreate(){
+      //监听外部发送进来的active事件
+      this.on('active',(obj)=>{
+        console.log(obj);
+      });
+      //flexible();
+      this.on('update',()=>{
+        console.log(Route.path);
+      })
+
+    }
+  }
+
+</script>
+  
