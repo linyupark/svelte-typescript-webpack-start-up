@@ -1,0 +1,21 @@
+<div 
+  class="pngIcon" 
+  style="
+    {{style}};
+    background-image: url({{url}});
+    height: {{size}};
+    width: {{size}};
+  "
+></div>
+<script>
+  import './pngIcon.less';
+  export default {
+    data() {
+      return {
+        size: '0.72rem',
+        style: '',
+        url: ''
+      }
+    }
+  }
+</script>

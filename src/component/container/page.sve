@@ -1,5 +1,10 @@
 <!-- 主页面区 -->
-<div id="pageContainer" class="{{animation}}" style={{style}}>
+<div 
+  id="pageContainer" 
+  class="{{animation}}" 
+  style={{style}} 
+  on:touchmove="pageTouchmove(event)"
+>
   <slot></slot>
 </div>
 
@@ -16,7 +21,7 @@
   **/
 
   import './page.less';
-  import { Header } from '../../';
+  import { Header, App } from '../../';
   import { flexible, noflexible } from '../../common/lib/rem.750'
 
   export default {
@@ -61,7 +66,9 @@
       
     },
     methods: {
-      
+      pageTouchmove(event) {
+        App.emit('pageTouchmove', event);
+      }
     },
     components: {}
   }

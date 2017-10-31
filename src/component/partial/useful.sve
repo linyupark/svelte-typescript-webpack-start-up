@@ -2,14 +2,14 @@
 <div class="partialUseful">
   <div class="col">
     <div class="num yes">
-      <div class="icon" style="background-image: url({{usefulIcon}})"></div>
+      <PngIcon size="0.72rem" url={{usefulIcon}} />
       {{usefulNum}}
     </div>
     <button class="btn" on:click="fire('useful')">有用</button>
   </div>
   <div class="col">
     <div class="num no">
-      <div class="icon" style="background-image: url({{uselessIcon}})"></div>
+      <PngIcon size="0.72rem" url={{uselessIcon}} />
       {{uselessNum}}
     </div>
     <button class="btn" on:click="fire('useless')">没用</button>
@@ -20,6 +20,7 @@
   import './useful.less';
   import usefulIcon from './icon/icon_useful@2x.png';
   import uselessIcon from './icon/icon_useless@2x.png';
+  import PngIcon from './pngIcon.sve';
   export default {
     data() {
       return {
@@ -30,6 +31,8 @@
       }
     },
     methods: {},
-    components: {}
+    components: {
+      PngIcon
+    }
   }
 </script>

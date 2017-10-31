@@ -1,0 +1,39 @@
+<!-- 
+  加入群
+-->
+
+<div class="partialJoinGroup">
+  <div class="description">{{description}}</div>
+  <div class="row">
+    <div class="row start">
+      <Avatar src={{avatar}} size="1.0667rem"></Avatar>
+      <div class="info">
+        <div class="name">{{groupName}}</div>
+        <div class="num">{{memberNum}}人已加入</div>
+      </div>
+    </div>
+    <div>
+      <button class="btn" on:click="fire('join', groupId)">加入群</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import './joinGroup.less';
+  import Avatar from '../avatar/round.sve';
+  export default {
+    data() {
+      return {
+        description: '想跟达人近距离解除，赶紧加入吧',
+        groupId: 0,
+        avatar: '',
+        groupName: '群名',
+        memberNum: 354,
+      }
+    },
+    methods: {},
+    components: {
+      Avatar
+    }
+  }
+</script>

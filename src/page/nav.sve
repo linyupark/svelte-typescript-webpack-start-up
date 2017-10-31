@@ -4,7 +4,7 @@
   }
 </style>
 
-<Page style="background: #f4f4f4; padding-bottom: 1.2rem;">
+<Page style="background: #f4f4f4;">
   <Login ref:login />
   <ul hidden={{loginStatus=='login'}}>
     <li>
@@ -15,6 +15,7 @@
   </ul>
   <Listener totalNum="3541" style="border-bottom: 1px solid #eee;"></Listener>
   <Useful ref:useful></Useful>
+  <JoinGroup groupName="用心守护宝宝成长，全职妈妈在期待中前行" avatar="https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw"></JoinGroup>
 </Page>
 
 <script>
@@ -22,6 +23,7 @@
   import Login from '../component/login/index.sve';
   import Useful from '../component/partial/useful.sve';
   import Listener from '../component/partial/listener.sve';
+  import JoinGroup from '../component/partial/joinGroup.sve';
   export default {
     data() {
       return {
@@ -47,7 +49,7 @@
       }
     },
     components: {
-      Page, Login, Useful, Listener
+      Page, Login, Useful, Listener, JoinGroup
     }
   }
 </script>
