@@ -1,0 +1,51 @@
+
+<div 
+  class="basicActionSheet {{type}} {{visible?'visible':''}}"
+  on:touchmove="prevent(event)"
+>
+  <div class="panel">
+    <slot name="head"></slot>
+    <div class="content">
+      <slot name="content">
+        请设置 {{'<div slot="content">...</div>'}}
+      </slot>
+    </div>
+    <slot name="button">
+      <a href="javascript:;" class="btn" on:click="close()">取消</a>
+    </slot>
+  </div>
+</div>
+
+<!-- 遮罩层 -->
+<div 
+  class="actionSheetMask {{visible?'visible':''}}" 
+  on:touchmove="prevent(event)"
+  on:click="close()"
+/>
+
+<script>
+  import './basic.less';
+  export default {
+    data() {
+      return {
+        // round | full
+        type: 'round',
+        visible: false
+      }
+    },
+    methods: {
+      prevent(event) {
+        event.preventDefault();
+      },
+      close() {
+        this.fire('close');
+        this.set({ visible: false });
+      },
+      open() {
+        this.fire('open');
+        this.set({ visible: true });
+      }
+    },
+    components: {}
+  }
+</script>

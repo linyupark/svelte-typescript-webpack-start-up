@@ -1,0 +1,53 @@
+.basicActionSheet {
+  opacity: 0;
+  transform: translateY(50%);
+  margin: 0 0.2667rem 0.2667rem 0.2667rem;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
+  transition: all 0.2s;
+  &.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  &.full {
+    margin: 0;
+    .panel {
+      border-radius: 0;
+    }
+  }
+  .panel {
+    background: #fff;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    .content {
+      padding: 0.5333rem;
+      font-size: 0.32rem;
+      color: #666;
+    }
+    .btn {
+      padding: 0.4rem;
+      color: #666;
+      text-align: center;
+      display: block;
+      border-top: 1px solid #eee;
+      font-size: 0.4267rem;
+    }
+  }
+}
+
+.actionSheetMask {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 70%);
+  z-index: 98;
+  &.visible {
+    display: block;
+  }
+}
