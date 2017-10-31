@@ -4,8 +4,11 @@
     width: 10rem;
     top: 0;
     box-shadow: 0 1px 2px #999;
-    overflow: hidden;
     z-index: 9;
+  }
+  .headerHome{
+    position: relative;
+    z-index: 10;
   }
 </style>
 
@@ -23,12 +26,18 @@
     </div>
   </div>
   {{/if}}
+  {{#if header.indexOf('navbar')>=0}}
+  <Navbar></Navbar>
+  {{/if}}
+
 </div>
 
 
 <script>
   import Icon from '../svg/icon.sve';
   import './header.less';
+  //引入导航条组件
+  import Navbar from '../navbar/navbar.sve';
 
   export default {
     data() {
@@ -67,7 +76,8 @@
       }
     },
     components: {
-      Icon
+      Icon,
+      Navbar
     }
   }
 </script>

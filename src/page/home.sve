@@ -4,7 +4,7 @@
   header={{header}}
   style="background: #e8e8e8;"
 >
-
+adsf
   <!-- 视频区域 -->
   {{#each videoList as v}}
   <div class="videoCard">
@@ -20,7 +20,7 @@
   export default {
     data() {
       return {
-        header: ['home'],
+        header: ['home','navbar'],
         videoList: [],
       }
     },

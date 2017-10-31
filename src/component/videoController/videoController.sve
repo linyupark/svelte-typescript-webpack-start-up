@@ -1,0 +1,171 @@
+<div class='VideoControllComponent' on:touchstart='processSkipStart()'>
+  <div class='playBtn'>
+      {{#if play}}
+        <i class="pauseIcon" on:click='play(true)'></i>
+      {{else}}
+        <i class="playIcon" on:click='play(false)'></i>
+      {{/if}}
+  </div>
+  <div class='currentTime'>{{currentTime}}</div>
+  
+  <div ref:processWrapper class='processWrapper' on:touchstart='processSkipStart()' on:touchend='processSkipEnd(event)'>
+      <div class="processBar">
+        <div class='palyBar' style='width:{{precent}}%'></div>
+        <div class='circle' 
+              ref:circle 
+              style='left:{{precent}}%' 
+              on:touchstart='circleSkipStart(event)' 
+              on:touchmove='circleSkipMove(event)'
+        ></div>
+      </div>
+  </div>
+  
+  <div class='durationTime'>{{ele===undefined?'0':durationTime}}</div>
+  
+  <div class='fullScreen' on:click='fullscreen()'><i></i></div>
+</div>
+
+
+<script>
+  import './videoController.less';
+
+  export default {
+    data() {
+      return {
+        //props
+        ele:undefined,//video DOM元素
+        //状态属性
+        play:true,//播放状态（播放/暂停）
+        currentTime:"0.00",//当前播放时间
+        durationTime:'0.00',//视频总长度时间
+        currentLength:0,//当前已播放秒数
+        durationLength:0,//视频总秒数
+
+        moveStart:0,//手指开始移动时x轴值
+        moveEnd:0,//手指结束移动时x轴的值
+        processWidth:0,//进度条的总宽度
+      }
+    },
+    computed:{
+      //计算已播放百分比
+      precent(currentLength,durationLength){
+        return (currentLength/durationLength)*100;
+      }
+    },
+    methods: {
+      //计算并更新当前播放时间
+      calculateCurrent(){
+        let time=Math.floor(this.get('ele').currentTime);
+        if(time<=9){
+          this.set({currentTime:'0:0'+time})
+        }else if(time<=59){
+          this.set({currentTime:'0:'+time})
+        }else{
+          let minutes=Math.floor(time/60);
+          let seconds=time-60*minutes;
+          if(seconds<=9){
+            this.set({currentTime:minutes+':0'+seconds})
+          }else{
+            this.set({currentTime:minutes+':'+seconds})
+          }
+        }
+      },
+      play(flag){
+        this.set({play:!flag});
+        //播放
+        if(flag){
+          this.get('ele').play();
+        //暂停
+        }else{
+          this.get('ele').pause();
+        }
+         this.get('ele').ontimeupdate=()=>{
+            //更新当前已播放的秒数
+            this.set({currentLength:this.get('ele').currentTime});
+            //修改当前播放时间
+            this.calculateCurrent();
+        }
+      },
+      //全屏播放
+      fullscreen(){
+        this.get('ele').webkitRequestFullScreen();
+      },
+      //进度条上点击跳转
+      processSkipStart(){
+        //事件通知外部组件
+        this.fire('touchDown');
+      },
+      //进度条上结束点击
+      processSkipEnd(event){
+         //获取进度条左边界距离屏幕左边界的距离，以及进度条的总宽度
+        this.set({
+          moveStart:this.refs.processWrapper.offsetLeft,
+          processWidth:this.refs.processWrapper.offsetWidth
+        });
+        //获取移动的距离
+        let distance=event.changedTouches[0].pageX-this.get('moveStart');
+        let percent=distance/this.get('processWidth');
+        //设置视频的当前播放时长
+        this.get('ele').currentTime=this.get('durationLength')*percent;
+        //更新当前播放时长
+        this.set({currentLength:this.get('durationLength')*percent})
+        //事件通知负组件已经松开手指
+        this.fire('touchUp');
+      },
+      //圆圈按钮开始拖动
+      circleSkipStart(event){
+        //获取进度条左边界距离屏幕左边界的距离,以及进度条的宽度
+        this.set({
+          moveStart:this.refs.processWrapper.offsetLeft,
+          processWidth:this.refs.processWrapper.offsetWidth
+        });
+        //事件通知外部组件
+        this.fire('touchDown');
+      },
+      //圆圈按钮移动
+      circleSkipMove(){
+        let moveEnd=event.changedTouches[0].pageX;
+        //计算指针移动距离
+        let distance=moveEnd-this.get('moveStart');
+        if(distance<=0){
+            return ;
+        }
+        //计算移动距离相对于进度条总宽度的百分比
+        let percent=distance/this.get('processWidth')*100;
+        this.get('ele').currentTime=(this.get('durationLength')*percent)/100;
+      }
+    },
+    oncreate(){
+      //监听视频DOM元素就绪
+      this.observe('ele',()=>{
+        //监听视频资源就绪
+        this.get('ele').oncanplay=()=>{
+          //获取视频的总时长（秒数）
+          this.set({durationLength:this.get('ele').duration});
+          //计算视频总时长
+          let time=Math.floor(this.get('ele').duration);
+          //如果未超过59秒
+          if(time<=59){
+              this.set({durationTime:'0:'+time});
+          }else{
+              let minutes=Math.floor(time/60);
+              this.set({durationTime:minutes+':'+(time-60*minutes)});
+          }
+        }
+      },{
+        init:false
+      })
+      //监听播放事件
+      this.on('play',()=>{
+          this.play(true);
+      })
+      //监听暂停事件
+      this.on('pause',()=>{
+          this.play(false);
+      })
+    },
+    components: {
+
+    }
+  }
+</script>
