@@ -1,0 +1,42 @@
+.videoCoverComponent{
+    position: relative;
+    overflow: hidden;
+   
+    video{
+      display: block;
+      outline: none;
+      width: 100%;
+    }
+    .videoImg{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: url(./cover.jpeg) no-repeat;
+        background-position: bottom;
+        background-size: cover;
+        
+    }
+    .videoBtn{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color:rgba(0,0,0,0.15);
+        background-image: url(./play.png);
+        background-position: 50%;
+        background-repeat:no-repeat;
+        background-size:1.5rem 1.5rem;
+        transition: background-color 0.5s;
+        -webkit-transition:background-color 0.5s;
+      }
+      .videoControllerWrapper{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        
+      }
+}
