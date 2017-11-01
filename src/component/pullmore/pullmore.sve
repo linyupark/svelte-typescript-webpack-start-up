@@ -1,19 +1,31 @@
 <div class="pullmoreComponent">
-  <p>{{yield}}</p>
-  <p ref:more>加载更多</p>
-  <div style='display:{{loadding?"block":"none"}}'>
+  <slot></slot>
+  <p ref:more></p>
+  <div class="loadding" style='display:{{loadding?"block":"none"}}'>
     <Icon type="loading" color="#0be" size="0.4533rem" center></Icon>
   </div>
 </div>
 
 <script>
   import './pullmore.less';
-  import { flexible, noflexible } from '../../common/lib/rem.750';
   import Icon from '../svg/icon.sve';
+
+  /*
+  * 发送事件
+  * callback：当滑动页面后让“加载更多”即将进入视口后，当前组件发送callback事件到外部，由于外部执行ajax请求
+  * 接收事件 
+  * response:外部执行ajax让数据请求完毕后，发送该事件到当前组件，当前组件接收到该事件即让loadding图标隐藏
+  * request：外部组件发送request事件到当前组件后，当前组件然后发送callback事件到外部，相当于让外部自己触发自己的ajax请求再次发送
+  */
 
   export default {
     data() {
       return {
+        //props接口参数
+        init:true,//初始化时是否默认发送执行一次请求
+        distance:100,//"加载更多"距离屏幕底边还有多少距离时即发送事件开始请求数据
+  
+        //内部属性
         loadding:false,//loadding显示状态
       }
     },
@@ -28,22 +40,32 @@
       }  
     },
     oncreate(){
-        flexible();
-        //检查“加载更多”按钮是否在在视口内，如果在则初始化就执行一次请求
-        console.log(this.refs.more,this.refs.more.offsetTop,this.offsetTop(this.refs.more),window.innerHeight,window.pageYOffset);
-        //如果加载更多在视口范围内，则执行执行回调请求数据
-        if(this.offsetTop(this.refs.more)<=window.innerWidth+window.pageYOffset){
-          setTimeout(()=>{
-            //发送事件
-            this.fire('request')
-          })
-          //显示loadding
-          this.set({loadding:true})
+        //检查props是否设置出初始化请求
+        if(this.get('init')){
+            setTimeout(()=>{
+              this.fire('callback');
+              this.set({
+                loadding:true
+              })
+            })
         }
-       
+        //windows绑定scroll事件
+        window.addEventListener('scroll',()=>{
+          if(this.offsetTop(this.refs.more)-this.get('distance')<=window.innerHeight+window.pageYOffset){
+            setTimeout(()=>{
+              //发送事件
+              this.fire('callback');
+            })
+            //显示loadding
+            this.set({loadding:true});
+          }
+        },false)
         //监听response事件，隐藏loadding
         this.on('response',()=>{
-          this.set({loadding:false})
+          this.set({loadding:false});
+        })
+        this.on('request',()=>{
+          this.fire('callback');
         })
     },
     components: {

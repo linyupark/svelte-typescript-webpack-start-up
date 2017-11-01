@@ -2,31 +2,28 @@
   on:touchmove="prevent(event)"
 />
 <div class="pullBarComponent" >
-  <div class="barWrapper">
+  <div class="barWrapper" ref:barWrapper>
     <ul>
-      {{#each arr as v,i}}
+      {{#each data as v,i}}
         <li class='{{active===i?"active":""}}' on:click='itemChange(v,i)'>{{v}}</li>
       {{/each}}
     </ul>
-    <div class="moreWrapper">
-      <i class="moreBtn" on:click='pulldown(true)'></i>
-    </div>
   </div>
   <!-- 遮罩层 -->
   <div class="bg" style='display:{{bgShow?"block":"none"}};opacity:{{bgOpacity}};'></div>
   <!-- 弹出内容层 -->
   <div class="pullWrapper" style='transform:translateY({{move}});'>
-      <i on:click='pulldown(false)' style='display:{{iconCloseShow?"block":"none"}};transform: rotate({{iconCloseRotate}}deg);'></i>
-      <div>
-        <div class="title">
-          <span>标题栏</span>
-        </div>
-        <p>内容1</p>
-        <p>内容2</p>
-        <p>内容3</p>
-        <p>内容4</p>
-        <p>内容5</p>
-      </div> 
+    <div class='contentWrapper {{bgShow?"showAni":"closeAni"}}' style='opacity:{{bgOpacity}};'>
+      <ul>
+        {{#each dataContent as v,i}}
+          <li class='{{active+1===i?"active":""}}' on:click='itemChecked(v,i)'>{{v}}</li>
+        {{/each}}
+      </ul>
+    </div> 
+  </div>
+  <!-- 悬浮按钮 -->
+  <div class="iconWrapper">
+    <i on:click='pulldown(!bgShow)' style='transform: rotate({{iconCloseRotate}}deg);'></i>
   </div>
 </div>
 
@@ -34,7 +31,7 @@
 <script>
   import './navbar.less';
   //import { flexible, noflexible } from '../../common/lib/rem.750';
-  import { Route } from '../../';
+  import { Route, App } from '../../';
   
   /*
   *事件
@@ -46,7 +43,7 @@
   export default {
     data(){
       return {
-        arr:['快学','问答','婚姻情感','亲子','生活','职场','自定义','自定义','自定义','自定义','自定义'],//数据
+        data:['快学','问答','婚姻情感','亲子','心灵成长','身心健康','新零售','商业智慧','职场','财富','教育','法律','生活','女性','美食','传统文化','IT技术','其他'],//数据
         active:0,//默认选中导航中第几项目
 
         bgShow:false,//遮罩层是否显示
@@ -56,15 +53,16 @@
         iconCloseRotate:0,//浮层关闭按钮旋转角度
       }
     },
+    computed:{
+      dataContent(data){
+        let arr=Array.apply(this,data);
+        arr.unshift('全部');
+        return arr;
+      }
+    },
     methods:{
-      
-      //window禁止页面滚动
-      prevent(event) {
-        if(this.get('bgShow')){
-          event.preventDefault();
-        }
-      },
-      //导航项选中
+     
+      //外部导航项选中
       itemChange(v,i){
         this.set({
           active:i
@@ -75,52 +73,67 @@
           index:i
         })
       },
+      //内部导航选中
+      itemChecked(v,i){
+        //调整外部导航条的选中状态
+        
+        //
+        if(v!=='全部'){
+          let index=i-1;
+          this.set({
+            active:index
+          })
+        }
+          console.log(this.refs.barWrapper.scrollLeft);
+        //关闭下拉列表
+        this.pullClose();
+        
+      },
       //点击加号按钮展开下拉浮层
       pulldown(flag){   
-          //打开
-          if(flag){
-            //展开下拉框与显示遮罩层
-            this.set({
-              bgShow:true,
-              move:'0%'        
-            });
-            setTimeout(()=>{
-              this.set({
-                bgOpacity:1,
-              })
-            },30);
-            setTimeout(()=>{
-              this.set({
-                iconCloseShow:true,
-              })
-            },300)
-            setTimeout(()=>{
-              this.set({
-                iconCloseRotate:45
-              })
-            },330);
-            /*
-            //禁止页面滚动
-            setTimeout(()=>{
-              //禁止页面滚动
-              //document.body.style.cssText='position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden;height:'+window.innerHeight+'px;background: rgb(232, 232, 232); font-size: 36px;';
-            },250);
-            */
-          //关闭
-          }else{
-            this.set({
-              bgOpacity:0,
-              move:"-100%",
-              iconCloseShow:false
-            })
-            setTimeout(()=>{
-              this.set({
-                bgShow:false,
-                iconCloseRotate:0
-              })
-            },250)
-          }
-          
+        //打开
+        if(flag){
+          this.pullOpen();
+        //关闭
+        }else{
+          this.pullClose();
+        }
+      },
+      //window禁止页面滚动
+      prevent(event) {
+        if(this.get('bgShow')){
+          event.preventDefault();
+        }
+      },
+      //展开下拉框架
+      pullOpen(){
+        //展开下拉框与显示遮罩层
+        this.set({
+          bgShow:true,
+          move:'0%',
+          iconCloseRotate:45        
+        });
+        //背景层显示出来后，让背景层逐渐由透明变为不透明
+        setTimeout(()=>{
+          this.set({
+            bgOpacity:1, 
+          })
+        },30);
+      },
+      //收起下拉框
+      pullClose(){
+        this.set({
+          bgOpacity:0,
+          move:"-100%",
+          iconCloseShow:false,
+          iconCloseRotate:0
+        });
+        //250毫秒后隐藏背景层
+        setTimeout(()=>{
+          this.set({
+            bgShow:false,
+          })
+        },250);
       }
     },
     oncreate(){
@@ -132,7 +145,7 @@
       this.on('update',()=>{
         console.log(Route.path);
       })
-
+      
     }
   }
 

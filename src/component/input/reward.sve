@@ -1,0 +1,37 @@
+<div class="rewardComponent">
+  <div>
+    <i></i>
+    <span>{{money}}</span>
+    <i>随机换</i>
+  </div>
+  <div>
+    <i></i>
+    <input type="text" />
+  </div>
+  <div>
+    <span>随机换</span>
+  </div>
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        //props参数
+        data:[1,1.68,1.88,1.99,2.68,2.99,4.99,5.20,6.66,8.88,9.99],
+        money:'0.00', 
+      }
+    },
+    methods: {
+      
+    },
+    oncreate(){
+      let random=parseInt(Math.random()*(this.get('data').length),10);
+      let money=this.get('data')[random];
+      //处理小数位
+      this.set({money:this.get('data')[random].toFixed(2)});
+      //
+    },
+    components: {}
+  }
+</script>
