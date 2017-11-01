@@ -1,13 +1,12 @@
-
 <style>
-  .header{
+  .header {
     height: 1.3333rem;
     line-height: 1.3333rem;
     text-align: center;
     font-size: 0.48rem;
     color: #333;
-    border-bottom: 1px solid #eee;
   }
+
   .close {
     width: 1.3333rem;
     height: 1.3333rem;
@@ -16,8 +15,66 @@
     left: 0;
     top: 0;
   }
-  .payBtn{
+
+  .item {
+    padding: 0.5333rem 0.4rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .item.price {
+    font-size: 0.32rem;
+    color: #999;
+    text-align: center;
+    line-height: 1.6;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .item>.not {
+    opacity: 0.5;
+    color: #90A1AE;
+  }
+
+  .item>.col {
+    display: flex;
+    align-items: center;
+  }
+
+  .item .text {
+    margin-left: 0.3333rem;
+    font-size: 0.3733rem;
+    line-height: 1.4;
+  }
+
+  .text>small {
+    font-size: 0.32rem;
+    display: block;
+    color: #90A1AE;
+  }
+
+  .price>strong {
+    font-size: 0.6133rem;
+    color: #666;
+    display: block;
+  }
+
+  .addBtn {
+    height: 0.8rem;
+    width: 1.7333rem;
+    text-align: center;
+    line-height: 0.8rem;
+    color: #fff;
+    background: #138BE9;
+    font-size: 0.3733rem;
+    border-radius: 0.8rem;
+  }
+
+  .payBtn {
     border: none;
+    width: 9.2rem;
     margin: 0.5333rem;
     background: #138BE9;
     height: 1.0667rem;
@@ -28,41 +85,146 @@
     font-size: 0.48rem;
     border-radius: 1.0667rem;
   }
+
+  .payBtn:disabled {
+    background: #ccc;
+    opacity: 0.5;
+  }
 </style>
 
 <ActionSheet ref:actionSheet type="full">
-  <div slot="head">
+  <div slot="content">
     <div class="header">
       <div class="close" on:click="close()">
         <Icon type="cross" size="0.4rem" />
       </div> 结算
     </div>
-  </div>
-  <div slot="content">
-    asd
+    <div class="item price">
+      需要花费
+      <strong>
+        <span style="font-size: 0.42rem;">¥</span>{{price}}</strong>
+      ({{price}}颗钻石)
+    </div>
+    <div class="item" on:click="changePayment('balance')">
+      <div class="col {{enoughBalance}}">
+        <PngIcon url={{zuanshiIcon}} size="0.76rem" />
+        <div class="text">
+          钻石支付
+          <small>剩余钻石 {{balance}}</small>
+        </div>
+      </div>
+      <div class="col">
+        {{#if enoughBalance === 'not'}}
+        <a href="javascript:;" class="addBtn">充值</a>
+        {{else}}
+        <Icon color="#138BE9" type="{{payment=='balance'?'checked':'unchecked'}}" style="padding: 0 2px 2px 0" size="0.4667rem" /> {{/if}}
+      </div>
+    </div>
+    <div class="item" on:click="changePayment('weixin')">
+      <div class="col">
+        <PngIcon url={{weixinIcon}} size="0.76rem" />
+        <div class="text">
+          微信支付
+          <small>建议有微信帐号用户使用</small>
+        </div>
+      </div>
+      <div class="col">
+        <Icon color="#138BE9" type="{{payment=='weixin'?'checked':'unchecked'}}" style="padding: 0 2px 2px 0" size="0.4667rem" />
+      </div>
+    </div>
   </div>
   <div slot="button">
-    <a href="javascript:;" class="payBtn">确认支付</a>
+    <button disabled={{payment=='' }} class="payBtn" on:click="pay()">确认支付</button>
   </div>
 </ActionSheet>
 
 <script>
+
   import Icon from '../svg/icon.sve';
+  import PngIcon from '../partial/pngIcon.sve';
   import ActionSheet from '../actionSheet/basic.sve';
+  import zuanshiIcon from '../partial/icon/buy_icon_surplus.png';
+  import weixinIcon from '../partial/icon/public_pay_weixin.png';
+  import PayModel from '../../model/pay';
+
   export default {
     data() {
-      return {}
+      return {
+        /**
+         * 要支付的商品对应的类型,其中，
+         * 1：聆听回答 ，对应targetId为回答Id，
+         * 6：提问，对应targetId为问题id，
+         * 7：专辑，对应targetId为专辑id，
+         * 8：直播，对应targetId为liveId，
+         * 9:直播礼物，对应targetId为giftId，
+         * 10:加入群组，对应targetId为teamId，
+         * 11:群内发红包，对应targetId为红包id，
+         * 12:充值，对应targetId为充值id
+        */
+        targetType: 12,
+        targetId: '',
+        // 需要支付
+        price: 0,
+        // 余额
+        balance: '查询中',
+        // 选择支付方式 weixin | balance
+        payment: '',
+        // 图标地址
+        zuanshiIcon, weixinIcon
+      }
     },
     methods: {
       close() {
         this.refs.actionSheet.close();
       },
       open() {
+        this.getBalance();
         this.refs.actionSheet.open();
+      },
+      // 修改支付方式
+      changePayment(type) {
+        // 余额不足的时候不允许切换支付方式到使用余额
+        if (type === 'balance' && this.get('enoughBalance') === 'not') return;
+        this.set({ payment: type });
+      },
+      // 获取余额
+      async getBalance() {
+        const response = await PayModel.finance();
+        const balance = Number(response.consumptionBalance);
+        this.set({
+          balance,
+          // 如果余额足够则用余额支付
+          payment: balance > Number(this.get('price')) ? 'balance' : 'weixin'
+        });
+      },
+      // 支付
+      pay() {
+        // 支付类型，其他目前h5不支持
+        const payType = {
+          balance: 1,
+          weixin: 4
+        };
+        PayModel.unionPay({
+          payParams: {
+            displayPrice: this.get('price'),
+            payType: payType[this.get('payment')],
+            targetId: this.get('targetId'),
+            targetType: this.get('targetType')
+          }
+        });
       }
     },
+    oncreate() {
+    },
     components: {
-      ActionSheet, Icon
+      ActionSheet, Icon, PngIcon
+    },
+    computed: {
+      // 足够支付
+      enoughBalance: (price, balance) => {
+        if (typeof balance === 'string') return 'not';
+        else return balance < price ? 'not' : 'yes'
+      }
     }
   }
 </script>

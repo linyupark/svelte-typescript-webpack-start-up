@@ -4,7 +4,6 @@
   on:touchmove="prevent(event)"
 >
   <div class="panel">
-    <slot name="head"></slot>
     <div class="content">
       <slot name="content">
         请设置 {{'<div slot="content">...</div>'}}

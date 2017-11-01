@@ -60,11 +60,11 @@ interface PayResponse {
 }
 
 export default class Pay {
+
   /**
-   * 我的钱包
-   * 00000018.个人中心接口
+   * 我的钱包（提现）
    */
-  static financeAccount() {
+  static finance() {
     return API('get', '/api/finance');
   }
 
@@ -91,9 +91,10 @@ export default class Pay {
   /**
    * 支付结算接口
    */
-  async unionPay(options: PayOptions) {
+  static async unionPay(options: PayOptions) {
     const { onSuccess = () => {}, onError = () => {}, payParams } = options;
     try {
+      console.log('支付信息', payParams);
       const response: PayResponse = await API('post', '/api/union_pay', {
         data: payParams
       });
@@ -102,7 +103,10 @@ export default class Pay {
       }
       // 微信H5支付失败则直接尝试调用内部支付
       if (!response.paid && payParams.payType === 4) {
-        return Pay.weixinPay(options);
+        return Pay.weixinPay({
+          payParams: response.payParams,
+          onSuccess, onError
+        });
       }
       onError(payParams);
     } catch (err) {
@@ -115,6 +119,7 @@ export default class Pay {
    */
   static weixinPay(options: PayOptions) {
     const { onSuccess = () => {}, onError = () => {}, payParams } = options;
+    console.log('微信内部支付', payParams);
     WeixinJSBridge.invoke('getBrandWCPayRequest', payParams, res => {
       if (res.err_msg === 'get_brand_wcpay_request:ok') {
         // 使用以上方式判断前端返回

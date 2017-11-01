@@ -20,23 +20,34 @@
     oncreate() {
 
       // 各设备探测是否已经登录
-      if (isWeixin() && Weixin.isLogined) {
-        console.log('已登录微信');
-        this.set({ status: 'logined' });
+      if (isWeixin()) {
+        if(Weixin.isLogined) {
+          console.log('已登录微信');
+          this.set({ status: 'logined' });
+        }
+        // 特殊情况（微信获取到code跳转后，需要再次请求token）
+        if(Weixin.code){
+          this.weixin();
+        }
+        // 其他设备。。。
       }
 
       // 尝试自动登录
       if (this.get('auto') && this.get('status') !== 'logined') {
-        isWeixin() && this.weixin();
-      }
-
-      // 特殊情况（微信获取到code跳转后，需要再次请求token）
-      if(isWeixin() && Weixin.code) {
-        this.weixin();
+        this.login()
       }
 
     },
     methods: {
+      // 混合登录
+      login() {
+        // 微信
+        if(isWeixin()) return this.weixin();
+        // 其他设备。。
+
+        // 无法登录时候报错，目前只有微信登录
+        alert('请在微信中登录');
+      },
       async weixin() {
         // 登录微信
         console.log('开始登录微信');

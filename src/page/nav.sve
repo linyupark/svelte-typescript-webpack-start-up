@@ -5,12 +5,11 @@
 </style>
 
 <Page style="background: #f4f4f4; height: 2000px;">
-  <Login ref:login />
+  <Auth ref:auth />
   <ul hidden={{loginStatus=='login'}}>
-    <li>
-      <a href="javascript:;" on:click="fire('routePush', '/share/merge-msg/111')">详情收录</a>
-      <a href="javascript:;" on:click="fire('routePush', '/home')">指引首页</a>
-      <a href="javascript:;" on:click="loginWeixin()" hidden={{loginStatus=='logined'}}>微信登录</a>
+    <li><a href="javascript:;" on:click="fire('routePush', '/share/merge-msg/111')">详情收录</a></li>
+    <li><a href="javascript:;" on:click="fire('routePush', '/home')">指引首页</a></li>
+    <li><a href="javascript:;" on:click="login()">用户登录</a>
     </li>
   </ul>
   <Listener totalNum="3541" style="border-bottom: 1px solid #eee;"></Listener>
@@ -18,14 +17,17 @@
   <JoinGroup groupName="用心守护宝宝成长，全职妈妈在期待中前行" avatar="https://assets.51wakeup.com/user/20170919152552MIlYqRKF8bkzb1aCbw"></JoinGroup>
 
   <button on:click="refs.actionSheet.open()">open</button>
-  <PayActionSheet ref:actionSheet>
+  <PayActionSheet price="1" ref:actionSheet>
   </PayActionSheet>
+
+  <div>{{starter}}</div>
+  <div on:click="randomNum()">随机</div>
 
 </Page>
 
 <script>
   import Page from '../component/container/page.sve';
-  import Login from '../component/login/index.sve';
+  import Auth from '../component/auth/login.sve';
   import Useful from '../component/partial/useful.sve';
   import Listener from '../component/partial/listener.sve';
   import JoinGroup from '../component/partial/joinGroup.sve';
@@ -33,13 +35,13 @@
   export default {
     data() {
       return {
-        loginStatus: ''
+        loginStatus: '',
+        starter: 0.00,
+        ender: 0.00,
+        random: [1.99, 5.20, 1.80]
       }
     },
     oncreate() {
-      this.refs.login.observe('status', status => {
-        this.set({ loginStatus: status })
-      });
       this.refs.useful.on('useful', () => {
         console.log('感觉有用')
       });
@@ -50,12 +52,34 @@
     helpers: {
     },
     methods: {
-      loginWeixin() {
-        this.refs.login.weixin();
+      chcker() {
+        if(Number(this.get('starter')) >= Number(this.get('ender'))){
+          clearInterval(this.timer);
+        }
+      },
+      counter() {
+        this.timer = setInterval(() => {
+          this.set({
+            starter: (Number(this.get('starter')) + 0.1).toFixed(2)
+          })
+          this.chcker();
+        }, 1);
+      },
+      randomNum() {
+        const n = this.get('random')[Math.floor(Math.random()*this.get('random').length)]
+        console.log(n);
+        this.set({
+          starter: 0.00,
+          ender: n
+        })
+        this.counter();
+      },
+      login() {
+        this.refs.auth.login();
       }
     },
     components: {
-      Page, Login, Useful, Listener, JoinGroup, PayActionSheet
+      Page, Auth, Useful, Listener, JoinGroup, PayActionSheet
     }
   }
 </script>
