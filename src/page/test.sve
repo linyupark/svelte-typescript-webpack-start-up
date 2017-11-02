@@ -1,8 +1,9 @@
-<h1 on:click="Test()">test{{name}}</h1>
+
 <input type="file" ref:file> {{progress}}%
+{{OSSSDKLoaded?'yes':'no'}}
 
 <script>
-  import { Test, loadScript } from './test'
+  import { loadScript } from './test'
   import { API } from '../common/api'
   export default {
     data() {
@@ -18,6 +19,7 @@
       });
       this.observe('OSSSDKLoaded', loaded => {
         if (loaded) {
+          console.dir(OSS);
           API('post', '/api/v3/oss/authorization', {
             data: { type: 1 }
           }).then(data => {
@@ -65,7 +67,6 @@
       });
     },
     methods: {
-      Test,
       getCheckPoint(file) {
         if(this.get('checkpoint')) {
           return this.get('checkpoint')
