@@ -1,0 +1,49 @@
+<div class="imgpreComponent" style='width:{{width}};height:{{height}};line-height:{{height}};'>
+ {{#if loadSrc===''}}
+  <Icon type="loading" color="#0be" size="0.4533rem" center></Icon>
+ {{/if}}
+ <div class="img {{loadSrc!=''?'visible':''}}" style="width:{{width}};height:{{height}};background-size:{{size}};background-image:url({{loadSrc}});"></div>
+</div>
+
+<script>
+  import './imgpre.less';
+  import Icon from '../svg/icon.sve';
+
+  export default {
+    data() {
+      return {
+        //props参数
+        width:'100%',
+        height:'200px',
+        src:"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/h%3D452/sign=40515b99ff03918fc8d13ccf633c264b/11385343fbf2b211b0658937c28065380cd78e7b.jpg",
+        size:"cover",
+
+        //内部属性
+        loadSrc:'',//图片是否下载完毕
+        opacity:1,//图片透明度
+      }
+    },
+    methods: {
+
+    },
+    oncreate(){
+      //创建img下载图片
+      let img=new Image();
+      img.src=this.get('src');
+      //图片下载完毕
+      img.onload=()=>{
+        this.set({
+          loadSrc:this.get('src'),
+        })
+        setTimeout(()=>{
+          this.set({
+             opacity:1
+          })
+        })
+      }
+    },
+    components: {
+      Icon
+    }
+  }
+</script>

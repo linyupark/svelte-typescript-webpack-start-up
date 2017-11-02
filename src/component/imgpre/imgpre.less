@@ -1,0 +1,14 @@
+.imgpreComponent{
+  text-align: center;
+  background: #ccc;
+  position: relative;
+  .img{
+    position: absolute;
+    top: 0;
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    &.visible{
+      opacity: 1;
+    }
+  }
+}

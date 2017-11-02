@@ -67,6 +67,7 @@
     },
     methods: {
       pageTouchmove(event) {
+        console.log(1);
         App.emit('pageTouchmove', event);
       }
     },

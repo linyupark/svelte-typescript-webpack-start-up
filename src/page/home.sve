@@ -2,31 +2,49 @@
 <Page 
   title='指引'
   header={{header}}
-  style="background: #e8e8e8;"
+  style="background: #e8e8e8;width:100%;"
 >
-adsf
+
   <!-- 视频区域 -->
   {{#each videoList as v}}
   <div class="videoCard">
     
   </div>
   {{/each}}
+  <Imgpre></Imgpre>
 
+  
 
 </Page>
 
 <script>
   import Page from '../component/container/page.sve';
+  //引入下拉加载组件
+  import Pullmore from '../component/pullmore/pullmore.sve';
+  //引入图片预加载组件
+  import Imgpre from '../component/imgpre/imgpre.sve';
+  //引入打赏输入框组件
+  import Reward from '../component/input/reward.sve';
+
   export default {
     data() {
       return {
         header: ['home','navbar'],
         videoList: [],
+        result:[]
       }
     },
-    methods: {},
+    methods: {
+
+    },
+    oncreate(){
+     
+    },
     components: {
-      Page
+      Page,
+      Pullmore,
+      Imgpre,
+      Reward
     }
   }
 </script>
