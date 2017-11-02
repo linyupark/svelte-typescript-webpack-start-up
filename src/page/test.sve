@@ -1,0 +1,85 @@
+
+<input type="file" ref:file> {{progress}}%
+{{OSSSDKLoaded?'yes':'no'}}
+
+<script>
+  import { loadScript } from './test'
+  import { API } from '../common/api'
+  export default {
+    data() {
+      return {
+        OSSSDKLoaded: false,
+        progress: 0,
+        checkpoint: null
+      }
+    },
+    oncreate() {
+      loadScript('http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js', () => {
+        this.set({ OSSSDKLoaded: true })
+      });
+      this.observe('OSSSDKLoaded', loaded => {
+        if (loaded) {
+          console.dir(OSS);
+          API('post', '/api/v3/oss/authorization', {
+            data: { type: 1 }
+          }).then(data => {
+            var client = new OSS.Wrapper({
+              accessKeyId: data.accessKeyId,
+              accessKeySecret: data.accessKeySecret,
+              stsToken: data.securityToken,
+              endpoint: data.endpoint,
+              bucket: data.bucket
+            });
+            // 上传
+            this.refs.file.addEventListener('change', e => {
+              const file = e.target.files[0];
+              client.multipartUpload('svideo/20171102143109H8hXIY6VsKeX9FCWBA', file, {
+                parallel: 2,
+                checkpoint: this.getCheckPoint(file),
+                progress: (percent, checkpoint) => {
+                  return (done) => {
+                    this.set({
+                      progress: Math.floor(percent*100),
+                      checkpoint
+                    });
+                    sessionStorage.setItem('oss_checkpoint', JSON.stringify(checkpoint));
+                    console.log(checkpoint);
+                    done();
+                  }
+                }
+              }).then(res => {
+                console.log('上传成功', res);
+                this.set({
+                  progress: 0
+                })
+                // 列表
+                client.list({
+                  'max-keys': 10
+                }).then(result => {
+                  console.log(result);
+                }).catch(err => {
+                  console.log(err);
+                });
+              })
+            });
+          })
+        }
+      });
+    },
+    methods: {
+      getCheckPoint(file) {
+        if(this.get('checkpoint')) {
+          return this.get('checkpoint')
+        } else {
+          let obj = sessionStorage.getItem('oss_checkpoint');
+          if(!obj) return null
+          obj = JSON.parse(obj);
+          if(Object.keys(obj.file).length === 0) {
+            obj.file = file
+          }
+          return obj;
+        }
+      }
+    }
+  };
+</script>

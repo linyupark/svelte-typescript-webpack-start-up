@@ -38,18 +38,19 @@ export const API = async (method, url, settings = {}) => {
     );
     // 接口错误信息统一处理
     if (response.status >= 400 || response.status <= 500) {
-      APIListener.emit('Error', response.data);
+      APIListener.emit('Error');
     }
     if (response.status == 401) {
-      APIListener.emit('Unauthorized', response.data);
+      APIListener.emit('Unauthorized');
+      console.error('Unauthorized 401');
     }
     if (response.status == 403) {
-      APIListener.emit('Forbidden', response.data);
+      APIListener.emit('Forbidden');
+      console.error('Forbidden 403');
     }
 
     return response.data;
   } catch (e) {
-    console.error(e);
     alert('接口请求错误');
   }
 };

@@ -19,10 +19,17 @@
   {{#if header.indexOf('home') >= 0}}
   <div class="headerHome">
     <div class="container">
-      <a href="/#/home" class="home"><Icon type="home" size="0.64rem" /> 首页</a>
-      <div class="zhiyin"></div>
-      <a href="javascript:;"  class="search"><Icon type="search" size="0.64rem" /></a>
-      <a href="javascript:;"  class="user"><Icon type="user" size="0.64rem" /></a>
+      <a href="/#/home" class="home">
+        <PngIcon url={{homeIcon}} size="0.5333rem" /> 首页</a>
+      <div class="zhiyin">
+        <PngIcon url={{zhiyinIcon}} size="0.7467rem" width="1.72rem" />
+      </div>
+      <a href="javascript:;" class="search">
+        <PngIcon url={{searchIcon}} size="0.5333rem" />
+      </a>
+      <a href="javascript:;" class="user">
+        <PngIcon url={{userIcon}} size="0.5333rem" />
+      </a>
     </div>
   </div>
   {{/if}}
@@ -35,6 +42,11 @@
 
 <script>
   import Icon from '../svg/icon.sve';
+  import PngIcon from '../partial/pngIcon.sve';
+  import zhiyinIcon from '../partial/icon/zhiyin_logo@2x.png';
+  import homeIcon from '../partial/icon/nav_home@2x.png';
+  import userIcon from '../partial/icon/nav_personal@2x.png';
+  import searchIcon from '../partial/icon/nav_search.png';
   import './header.less';
   //引入导航条组件
   import Navbar from '../navbar/navbar.sve';
@@ -43,7 +55,8 @@
     data() {
       return {
         header: [],
-        hidden: true
+        hidden: true,
+        zhiyinIcon, homeIcon, userIcon, searchIcon
       }
     },
     oncreate() {
@@ -77,7 +90,8 @@
     },
     components: {
       Icon,
-      Navbar
+      Navbar,
+      PngIcon
     }
   }
 </script>

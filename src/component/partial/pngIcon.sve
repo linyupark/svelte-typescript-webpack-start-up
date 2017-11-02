@@ -4,7 +4,7 @@
     {{style}};
     background-image: url({{url}});
     height: {{size}};
-    width: {{size}};
+    width: {{width||size}};
   "
 ></div>
 <script>
@@ -13,6 +13,7 @@
     data() {
       return {
         size: '0.72rem',
+        width: 0,
         style: '',
         url: ''
       }
