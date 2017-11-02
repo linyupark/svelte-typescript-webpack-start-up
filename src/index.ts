@@ -11,6 +11,7 @@ Route.page(/^\/share\/merge-msg\/(\d+)/, 'mergeMsg.sve');
 // 开发模式下允许匹配的路由
 if(__ENV__ === 'developer') {
   Route.page(/^\/home$/, 'home.sve');
+  Route.page(/^\/test$/, 'test.sve');
   Route.page(/^\/$/, 'nav.sve');
 }
 Route.page(/.*/, 'notFound.sve');
