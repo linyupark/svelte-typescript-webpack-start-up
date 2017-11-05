@@ -21,10 +21,10 @@ class Router {
   private currentPage = null;
 
   // 有效页面规则
-  private pages = [];
+  private views = [];
 
   // 页面正则匹配的参数
-  private pageParams = [];
+  private params = [];
 
   // 取消阻止
   private unblock = null;
@@ -43,11 +43,11 @@ class Router {
   // 解析地址
   private parse(pathname, action?: string) {
     let isMatch = false;
-    for (let page of this.pages) {
+    for (let page of this.views) {
       const matched = pathname.match(page.rule);
       if (matched) {
-        this.pageParams = matched.splice(1);
-        import(`../page/${page.component}`)
+        this.params = matched.splice(1);
+        import(`view/${page.component}`)
           .then(Page => {
 
             // 要传递给页面组件的数据
@@ -55,7 +55,7 @@ class Router {
               Route: {
                 action: (action && action.toLowerCase()) || '',
                 pathname,
-                params: this.pageParams,
+                params: this.params,
                 search: this.history.location.search
               }
             };
@@ -100,7 +100,7 @@ class Router {
       }
     }
     if (!isMatch) {
-      console.error('No route matched.');
+      console.error('没有匹配路由.');
     }
   }
 
@@ -109,8 +109,8 @@ class Router {
     this.parse(this.history.location.pathname);
   }
 
-  page(rule: RegExp, component) {
-    this.pages.push({ rule, component });
+  add(rule: RegExp, component) {
+    this.views.push({ rule, component });
   }
 
 }

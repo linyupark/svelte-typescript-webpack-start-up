@@ -1,0 +1,74 @@
+<script>
+
+  /**
+   * 自动根据 dpr 来设置 html font-size 来实现 rem 自动匹配各设备
+   */
+
+  const dpr = window.devicePixelRatio || 1;
+  const docEl = document.documentElement;
+
+  export default {
+    data() {
+      return {
+        maxWidth: 1024,
+        pxToRem: 75,
+        hairlines: false,
+      }
+    },
+    oncreate() {
+
+      setBodyFontSize();
+      setRemUnit();
+
+      // reset rem unit on page resize
+      window.addEventListener('resize', this.setRemUnit);
+      window.addEventListener('pageshow', this.pageShow);
+
+      // detect 0.5px supports
+      if (dpr >= 2) {
+        let fakeBody = document.createElement('body');
+        let testElement = document.createElement('div');
+        testElement.style.border = '.5px solid transparent';
+        fakeBody.appendChild(testElement);
+        docEl.appendChild(fakeBody);
+        if (testElement.offsetHeight === 1) {
+          docEl.classList.add('hairlines');
+          this.set({ hairlines: true });
+        }
+        docEl.removeChild(fakeBody);
+      }
+
+    },
+
+    ondestroy() {
+      window.removeEventListener('resize', this.setRemUnit);
+      window.removeEventListener('pageshow', this.pageShow);
+      document.body.style.fontSize = null;
+      docEl.style.fontSize = null;
+      document.removeEventListener('DOMContentLoaded', this.setBodyFontSize);
+    },
+
+    methods: {
+      pageShow(event) {
+        if (event.persisted) {
+          this.setRemUnit();
+        }
+      },
+      setBodyFontSize() {
+        if (document.body) {
+          document.body.style.fontSize =
+            docEl.clientWidth <= this.get('maxWidth') ?
+              12 * dpr + 'px' : this.get('pxToRem') + 'px';
+        } else {
+          document.addEventListener('DOMContentLoaded', this.setBodyFontSize);
+        }
+      },
+      setRemUnit() {
+        const rem = docEl.clientWidth <= this.get('maxWidth') ?
+          docEl.clientWidth / 10 : this.get('pxToRem');
+        docEl.style.fontSize = rem + 'px';
+      }
+    },
+    components: {}
+  }
+</script>

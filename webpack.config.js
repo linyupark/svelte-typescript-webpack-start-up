@@ -19,7 +19,7 @@ const ossPath = {
 let define = {
   // 后面的路径如果需要变为云地址，请自行修改
   __CDN__:
-    process.env.ENV === 'developer'
+    process.env.ENV === 'dev'
       ? '/dist/'
       : `https://assets.51wakeup.com/assets/${new Date().getFullYear()}/h5/${ossPath[
           process.env.ENV
@@ -35,30 +35,50 @@ let config = {
   },
   output: {
     filename: '[name].js',
-    chunkFilename: '[name][id].[chunkhash].js',
+    chunkFilename: '[id].[chunkhash].js',
     path: path.resolve('./www/dist'),
     publicPath: define.__CDN__
   },
   resolve: {
-    extensions: ['.ts', '.js'],
-    modules: [path.resolve('node_modules'), path.resolve('src')]
+    extensions: ['.ts', '.js', '.sve'],
+    modules: [path.resolve('node_modules'), path.resolve('src')],
+    alias: {
+      view: path.resolve('src/view'),
+      model: path.resolve('src/model'),
+      component: path.resolve('src/component'),
+      common: path.resolve('src/common'),
+    }
   },
   module: {
     rules: [
       {
-        test: /\.(js|ts)$/,
+        test: /\.js$/,
         include: path.resolve('src'),
-        use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }]
+        use: [
+          { loader: 'babel-loader', options: { cacheDirectory: true } }
+        ]
+      },
+      {
+        test: /\.ts$/,
+        include: path.resolve('src'),
+        use: [
+          { loader: 'babel-loader', options: { cacheDirectory: true } },
+          { loader: 'ts-loader' }
+        ]
       },
       {
         test: /\.sve$/,
         include: path.resolve('src'),
-        use: [{ loader: 'babel-loader' }, { loader: 'svelte-loader' }]
+        use: [
+          { loader: 'babel-loader', options: { cacheDirectory: true } },
+          { loader: 'svelte-loader' }
+        ]
       },
       {
-        test: /\.(png|jpg)$/,
+        test: /\.(png|jpg|gif)$/,
         include: path.resolve('src'),
-        use: ['url-loader?limit=8192&name=img/[hash:8].[name].[ext]']
+        use: ['url-loader?name=img/[hash:8].[name].[ext]']
+        // use: ['url-loader?limit=8192&name=img/[hash:8].[name].[ext]']
       },
       {
         test: /\.(less|css)$/,
@@ -105,11 +125,28 @@ let config = {
         define
       )
     ),
-    new HtmlWebpackHarddiskPlugin()
+    new HtmlWebpackHarddiskPlugin(),
+    
+    // 代码分离部分的模块命名
+    new webpack.NamedChunksPlugin(function(chunk) {
+      if (chunk.name) return chunk.name;
+      const regex = new RegExp(path.resolve('src/page'));
+      for (let m of chunk._modules) {
+        if (regex.test(m.context)) {
+          return path
+            .relative(path.resolve('src'), m.userRequest)
+            .split('/')
+            .slice(1)
+            .join('_')
+            .split('.')[0]
+        }
+      }
+      return null;
+    })
   ]
 };
 
-if (process.env.ENV === 'developer') {
+if (process.env.ENV === 'dev') {
   // 开发服务器
   config.devServer = {
     port: 8080,
@@ -120,7 +157,7 @@ if (process.env.ENV === 'developer') {
     stats: 'minimal'
   };
 
-  config.devtool = 'source-map';
+  // config.devtool = 'eval-source-map';
 
   // 忽略自动刷新监视文件夹
   config.watchOptions = {
@@ -136,18 +173,6 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
     // 优化模块合并
     new webpack.optimize.ModuleConcatenationPlugin(),
 
-    // 压缩脚本
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      compress: {
-        warnings: false,
-        drop_console: true,
-        collapse_vars: true,
-        reduce_vars: true
-      }
-    }),
-
     // 异步js合并
     new webpack.optimize.CommonsChunkPlugin({
       async: true,
@@ -160,6 +185,19 @@ if (['test', 'production'].indexOf(process.env.ENV) >= 0) {
       filename: '[name].css',
       disable: false,
       allChunks: true
+    }),
+
+    // 压缩脚本
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      comments: false,
+      sourceMap: false,
+      compress: {
+        warnings: false,
+        drop_console: true,
+        collapse_vars: true,
+        reduce_vars: true
+      }
     }),
 
     // 压缩gzip

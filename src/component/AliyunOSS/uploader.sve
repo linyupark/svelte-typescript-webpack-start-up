@@ -1,0 +1,131 @@
+<!-- 
+独立组件，如要在其他框架中使用，请使用svelte-cli编译
+相关文档：
+https://help.aliyun.com/document_detail/32069.html
+https://yq.aliyun.com/articles/178451
+-->
+
+
+
+<script>
+
+  const sdk = 'http://gosspublic.alicdn.com/aliyun-oss-sdk-4.10.0.min.js';
+
+  export default {
+    data() {
+      return {
+        // 触发点击的对象
+        uploadSelector: '',
+        // 上传方式，选择后自动：auto，点击确认上传: confirm
+        mode: 'auto',
+        // 如果是点击确认上传，则要设置确认点击对象
+        confirmSelector: '',
+        // 获取口令的STS服务器地址
+        STS: '',
+        // STS的请求方式，默认POST
+        STSMethod: 'POST',
+        // STS请求的数据
+        STSData: null,
+
+        // 私有属性
+        $SDKLoaded: false,
+        $SDK: null,
+        $Client: null,
+        $Uploader: null,
+        $File: null
+      }
+    },
+    oncreate() {
+
+      this.observe('$SDKLoaded', $SDKLoaded => {
+        if (!$SDKLoaded) return;
+        console.log('SDK加载完毕', OSS);
+        this.set({
+          $SDK: OSS
+        });
+      });
+
+      this.loadScript(sdk, () => {
+        // sdk加载成功
+        this.set({
+          $SDKLoaded: true
+        });
+      });
+    },
+    methods: {
+
+      // 绑定上传
+      bindUploader() {
+        const uploader = document.querySelector(this.get('uploadSelector'));
+        const confirmer = document.querySelector(this.get('confirmSelector'));
+        
+        if (!uploader) return alert('没有找到上传文件绑定对象 uploadSelector');
+        
+        this.set({ $Uploader: uploader });
+
+        if (this.get('mode') === 'auto') {
+          uploader.addEventListener('change', this.upload, false);
+        }
+        if (this.get('mode') === 'confirm') {
+          if (!confirmer) return alert('没有找到确定上传文件对象 confirmSelector');
+          confirmer.addEventListener('click', this.upload, false);
+        }
+      },
+
+      // 上传操作
+      upload(e) {
+        if (this.get('mode') === 'auto') {
+          this.set({
+            $File: e.target.files[0]
+          });
+        }
+        if (this.get('mode') === 'confirm') {
+          this.set({
+            $File: $Uploader.files[0]
+          });
+        }
+        console.log('得到上传文件', this.get('$File'));
+      },
+
+      // 请求获取登录认证信息
+      getSTS() {
+        let request;
+        if (!this.get($SDK)) return false;
+        if(typeof this.get('STS') === 'object') {
+          request = this.get('STS');
+        }
+        else {
+          request = OSS.urllib.request(this.get('STS'), {
+            method: this.get('STSMethod'),
+            data: this.get('STSData')
+          });
+        }
+        request.then(data => {
+          this.set({
+            $Client: new OSS.Wrapper({
+              accessKeyId: data.accessKeyId,
+              accessKeySecret: data.accessKeySecret,
+              stsToken: data.securityToken,
+              endpoint: data.endpoint,
+              bucket: data.bucket
+            })
+          });
+          console.log('OSS Client 准备完毕');
+        })
+          .catch(e => {
+            console.error('STS请求失败');
+            throw e;
+          });
+      },
+
+      // 异步载入 SDKJS
+      loadScript(src, cb) {
+        let script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = cb;
+        document.body.appendChild(script);
+      }
+    },
+  }
+</script>

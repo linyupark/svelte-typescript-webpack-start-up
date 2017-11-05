@@ -26,12 +26,13 @@
 </Page>
 
 <script>
-  import Page from '../component/container/page.sve';
-  import Auth from '../component/auth/login.sve';
-  import Useful from '../component/partial/useful.sve';
-  import Listener from '../component/partial/listener.sve';
-  import JoinGroup from '../component/partial/joinGroup.sve';
-  import PayActionSheet from '../component/partial/payActionSheet.sve';
+  import Page from 'component/container/page.sve';
+  import Auth from 'component/auth/login.sve';
+  import Useful from 'component/partial/useful.sve';
+  import Listener from 'component/partial/listener.sve';
+  import JoinGroup from 'component/partial/joinGroup.sve';
+  import PayActionSheet from 'component/partial/payActionSheet.sve';
+  import AliyunOSS from 'component/AliyunOSS/uploader.sve';
   export default {
     data() {
       return {
@@ -79,7 +80,7 @@
       }
     },
     components: {
-      Page, Auth, Useful, Listener, JoinGroup, PayActionSheet
+      Page, Auth, Useful, Listener, JoinGroup, PayActionSheet, AliyunOSS
     }
   }
 </script>
