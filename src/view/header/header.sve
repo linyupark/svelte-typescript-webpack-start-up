@@ -41,15 +41,15 @@
 
 
 <script>
-  import Icon from '../svg/icon.sve';
-  import PngIcon from '../partial/pngIcon.sve';
-  import zhiyinIcon from '../partial/icon/zhiyin_logo@2x.png';
-  import homeIcon from '../partial/icon/nav_home@2x.png';
-  import userIcon from '../partial/icon/nav_personal@2x.png';
-  import searchIcon from '../partial/icon/nav_search.png';
+  import Icon from 'component/svg/icon.sve';
+  import PngIcon from 'component/partial/pngIcon.sve';
+  import zhiyinIcon from 'component/partial/icon/zhiyin_logo@2x.png';
+  import homeIcon from 'component/partial/icon/nav_home@2x.png';
+  import userIcon from 'component/partial/icon/nav_personal@2x.png';
+  import searchIcon from 'component/partial/icon/nav_search.png';
   import './header.less';
   //引入导航条组件
-  import Navbar from '../navbar/navbar.sve';
+  import Navbar from 'component/nav/navbar/navbar.sve';
 
   export default {
     data() {

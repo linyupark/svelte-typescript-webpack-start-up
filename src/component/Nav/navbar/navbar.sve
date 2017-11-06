@@ -31,7 +31,7 @@
 <script>
   import './navbar.less';
   //import { flexible, noflexible } from '../../common/lib/rem.750';
-  import { Route, App } from '../../';
+  import { Route, App } from '../../../';
   
   /*
   *事件

@@ -12,11 +12,11 @@ import 'babel-polyfill';
 const Main = new Router(document.getElementById('main'));
 Main.add(/^\/share\/merge-msg\/(\d+)/, 'mergeMsg.sve');
 // 开发模式下
-if(__ENV__ === 'dev') {
-  Main.add(/^\/home$/, 'home.sve');
-  Main.add(/^\/test$/, 'test.sve');
-  Main.add(/^\/$/, 'nav.sve');
-}
+// if(__ENV__ === 'dev') {
+//   Main.add(/^\/home$/, 'home.sve');
+//   Main.add(/^\/test$/, 'test.sve');
+//   Main.add(/^\/$/, 'nav.sve');
+// }
 Main.add(/.*/, 'notFound.sve');
 Main.start();
 

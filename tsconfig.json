@@ -10,10 +10,10 @@
       "dom", "es6"
     ],
     "paths": {
-      "view": "src/view",
-      "model": "src/model",
-      "component": "src/component",
-      "common": "src/common"
+      "view": ["src/view"],
+      "model": ["src/model"],
+      "component": ["src/component"],
+      "common": ["src/common"]
     }
   }
 }
