@@ -20,7 +20,7 @@
 
 <script>
   import './joinGroup.less';
-  import Avatar from '../avatar/round.sve';
+  import Avatar from 'component/avatar/round.sve';
   export default {
     data() {
       return {

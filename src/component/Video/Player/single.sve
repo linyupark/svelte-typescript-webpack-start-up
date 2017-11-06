@@ -41,9 +41,9 @@
 </div>
 
 <script>
-  import Icon from '../svg/icon.sve'
+  import Icon from 'component/svg/icon.sve'
   import videoPlayIcon from './playIcon.png';
-  import { isWeixin } from '../../common/util';
+  import { isWeixin } from 'common/util';
   export default {
     data() {
       return {

@@ -21,8 +21,8 @@
   **/
 
   import './page.less';
-  import { Header, App } from '../../';
-  import { flexible, noflexible } from '../../common/lib/rem.750'
+  import { Header, App } from '../../../';
+  import { flexible, noflexible } from 'common/lib/rem.750'
 
   export default {
     data() {

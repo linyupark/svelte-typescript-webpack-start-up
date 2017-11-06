@@ -174,18 +174,18 @@
 
 <script>
 
-  import Page from '../component/container/page.sve';
-  import VideoPlayer from '../component/video/single.sve';
-  import AudioPlayer from '../component/audio/single.sve';
-  import AvatarRound from '../component/avatar/round.sve';
-  import FullscreenCarousel from '../component/carousel/fullscreen.sve';
-  import Team from '../model/team';
-  import Loading from '../component/loading/vc.sve';
-  import MsgContainer from '../component/container/message.sve';
-  import { gmt2date } from '../common/util';
-  import liveIcon from '../common/asset/liveIcon.png';
-  import qaIcon from '../common/asset/qaIcon.png';
-  import conf from '../common/config';
+  import Page from 'component/Wrapper/container/page.sve';
+  import VideoPlayer from 'component/Video/Player/single.sve';
+  import AudioPlayer from 'component/Audio/Player/single.sve';
+  import AvatarRound from 'component/avatar/round.sve';
+  import FullscreenCarousel from 'component/Carousel/fullscreen.sve';
+  import Team from 'model/team';
+  import Loading from 'component/Loading/vc.sve';
+  import MsgContainer from 'component/Wrapper/container/message.sve';
+  import { gmt2date } from 'common/util';
+  import liveIcon from 'common/asset/liveIcon.png';
+  import qaIcon from 'common/asset/qaIcon.png';
+  import conf from 'common/config';
 
   export default {
     data() {

@@ -10,7 +10,7 @@ import 'babel-polyfill';
 
 // 主部分
 const Main = new Router(document.getElementById('main'));
-Main.add(/^\/share\/merge-msg\/(\d+)/, 'mergeMsg.sve');
+// Main.add(/^\/share\/merge-msg\/(\d+)/, 'mergeMsg.sve');
 // 开发模式下
 // if(__ENV__ === 'dev') {
 //   Main.add(/^\/home$/, 'home.sve');

@@ -11,20 +11,20 @@
     
   </div>
   {{/each}}
-  <Imgpre></Imgpre>
+  <!-- <Imgpre></Imgpre> -->
 
   
 
 </Page>
 
 <script>
-  import Page from 'component/container/page.sve';
+  import Page from 'component/Wrapper/container/page.sve';
   //引入下拉加载组件
-  import Pullmore from 'component/pullmore/pullmore.sve';
+  // import Pullmore from 'component/pullmore/pullmore.sve';
   //引入图片预加载组件
-  import Imgpre from 'component/imgpre/imgpre.sve';
+  // import Imgpre from 'component/imgpre/imgpre.sve';
   //引入打赏输入框组件
-  import Reward from 'component/input/reward.sve';
+  // import Reward from 'component/input/reward.sve';
 
   export default {
     data() {
@@ -42,9 +42,9 @@
     },
     components: {
       Page,
-      Pullmore,
-      Imgpre,
-      Reward
+      // Pullmore,
+      // Imgpre,
+      // Reward
     }
   }
 </script>
